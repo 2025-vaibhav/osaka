@@ -8,6 +8,7 @@ const RightSection = ({ selectedCraft }) => {
   const [craftData, setCraftData] = useState(null);
   const [toolsText, setToolsText] = useState("");
   const [activeText, setActiveText] = useState(null);
+  const [backgroundImage, setBackgroundImage] = useState("");
 
   const buttonTexts = {
     english: [
@@ -35,6 +36,30 @@ const RightSection = ({ selectedCraft }) => {
   ];
 
   useEffect(() => {
+    // Set background image based on selected craft
+    switch (selectedCraft.toLowerCase()) {
+      case "bidri":
+        setBackgroundImage("/vinod-pics/bidriware/tools.png");
+        break;
+      case "zardozi":
+        setBackgroundImage("/vinod-pics/zardozi/tools.png");
+        break;
+      case "charkha":
+        setBackgroundImage("/vinod-pics/charkha/tools.png");
+        break;
+      case "loom weaving":
+        setBackgroundImage("/vinod-pics/loom-weaving/tools.png");
+        break;
+      case "dyeing":
+        setBackgroundImage("/vinod-pics/dyeing/tools.png");
+        break;
+      case "block printing":
+        setBackgroundImage("/vinod-pics/block-printing/tools.png");
+        break;
+      default:
+        setBackgroundImage("");
+    }
+
     fetch("/english-data.json")
       .then((res) => res.json())
       .then((data) => {
@@ -78,8 +103,15 @@ const RightSection = ({ selectedCraft }) => {
 
   return (
     <div className="w-[30%] flex flex-col gap-4 pl-4">
-      {/* Tools Panel - Fixed Height with Scroll */}
-      <div className="rounded-xl overflow-hidden h-32 relative bg-black/40 border-1 border-[#f2e9c9]">
+      <div
+        className="rounded-xl overflow-hidden h-32 relative bg-black/40 border-1 border-[#f2e9c9]"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent z-10"></div>
         <div className="absolute top-0 left-0 p-4 z-20 w-full h-full">
           <h2 className="text-2xl font-serif italic text-white">

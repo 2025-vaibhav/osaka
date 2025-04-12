@@ -5,8 +5,39 @@ import { motion, AnimatePresence } from "framer-motion";
 const MiddleSection = ({ selectedCraft }) => {
   const { language } = useLanguage();
   const [craftData, setCraftData] = useState(null);
+  const [heroImage, setHeroImage] = useState("");
 
   useEffect(() => {
+    // Set hero image based on selected craft
+    switch (selectedCraft.toLowerCase()) {
+      case "bidriware":
+      case "ビドリ":
+        setHeroImage("/vinod-pics/bidriware/hero.png");
+        break;
+      case "zardozi":
+      case "ザルドジ":
+        setHeroImage("/vinod-pics/zardozi/hero.png");
+        break;
+      case "charkha":
+      case "チャルカ":
+        setHeroImage("/vinod-pics/charkha/hero.png");
+        break;
+      case "loom weaving":
+      case "織機織り":
+        setHeroImage("/vinod-pics/loom-weaving/hero.png");
+        break;
+      case "dyeing":
+      case "染色":
+        setHeroImage("/vinod-pics/dyeing/hero.png");
+        break;
+      case "block printing":
+      case "ブロック印刷":
+        setHeroImage("/vinod-pics/block-printing/hero.png");
+        break;
+      default:
+        setHeroImage("");
+    }
+
     fetch("/english-data.json")
       .then((res) => res.json())
       .then((data) => {
@@ -15,7 +46,7 @@ const MiddleSection = ({ selectedCraft }) => {
       .catch((err) => {
         console.error("Error loading JSON:", err);
       });
-  }, []);
+  }, [selectedCraft]);
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideImages = [
@@ -38,13 +69,21 @@ const MiddleSection = ({ selectedCraft }) => {
 
   return (
     <div className="w-[45%] flex flex-col gap-4">
-      {/* Title Section */}
-      <div className="rounded-xl overflow-hidden h-32 relative bg-black/40 border-1 border-[#f2e9c9]">
+      {/* Title Section with Hero Image */}
+      <div
+        className="rounded-xl overflow-hidden h-32 relative bg-black/40 border-1 border-[#f2e9c9]"
+        style={{
+          backgroundImage: `url(${heroImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent z-10"></div>
         <div className="absolute inset-0 z-20 flex items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.h2
-              key={selectedCraft || "default"} // Important for animation trigger
+              key={selectedCraft || "default"}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
