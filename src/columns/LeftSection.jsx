@@ -16,6 +16,7 @@ const LeftSection = ({ selectedCraft }) => {
   const [introBackground, setIntroBackground] = useState("");
   const [designBackground, setDesignBackground] = useState("");
   const [historyBackground, setHistoryBackground] = useState("");
+  const [processBackgrounds, setProcessBackgrounds] = useState([]);
 
   useEffect(() => {
     // Set background images based on selected craft
@@ -26,18 +27,39 @@ const LeftSection = ({ selectedCraft }) => {
         setIntroBackground("/vinod-pics/bidriware/introduction.png");
         setDesignBackground("/vinod-pics/bidriware/design.png");
         setHistoryBackground("/vinod-pics/bidriware/history.png");
+        setProcessBackgrounds([
+          "/vinod-pics/bidriware/process/1.png",
+          "/vinod-pics/bidriware/process/2.png",
+          "/vinod-pics/bidriware/process/3.png",
+          "/vinod-pics/bidriware/process/4.png",
+          "/vinod-pics/bidriware/process/5.png",
+        ]);
         break;
       case "zardozi":
       case "ザルドジ":
         setIntroBackground("/vinod-pics/zardozi/introduction.png");
         setDesignBackground("/vinod-pics/zardozi/design.png");
         setHistoryBackground("/vinod-pics/zardozi/history.png");
+        setProcessBackgrounds([
+          "/vinod-pics/zardozi/process/1.png",
+          "/vinod-pics/zardozi/process/2.png",
+          "/vinod-pics/zardozi/process/3.png",
+          "/vinod-pics/zardozi/process/4.png",
+          "/vinod-pics/zardozi/process/5.png",
+        ]);
         break;
       case "charkha":
       case "チャルカ":
         setIntroBackground("/vinod-pics/charkha/introduction.png");
         setDesignBackground("/vinod-pics/charkha/design.png");
         setHistoryBackground("/vinod-pics/charkha/history.png");
+        setProcessBackgrounds([
+          "/vinod-pics/charkha/process/1.png",
+          "/vinod-pics/charkha/process/2.png",
+          "/vinod-pics/charkha/process/3.png",
+          "/vinod-pics/charkha/process/4.png",
+          "/vinod-pics/charkha/process/5.png",
+        ]);
         break;
       case "loom weaving":
       case "loom_weaving":
@@ -45,12 +67,26 @@ const LeftSection = ({ selectedCraft }) => {
         setIntroBackground("/vinod-pics/loom-weaving/introduction.png");
         setDesignBackground("/vinod-pics/loom-weaving/design.png");
         setHistoryBackground("/vinod-pics/loom-weaving/history.png");
+        setProcessBackgrounds([
+          "/vinod-pics/loom-weaving/process/1.png",
+          "/vinod-pics/loom-weaving/process/2.png",
+          "/vinod-pics/loom-weaving/process/3.png",
+          "/vinod-pics/loom-weaving/process/4.png",
+          "/vinod-pics/loom-weaving/process/5.png",
+        ]);
         break;
       case "dyeing":
       case "染色":
         setIntroBackground("/vinod-pics/dyeing/introduction.png");
         setDesignBackground("/vinod-pics/dyeing/design.png");
         setHistoryBackground("/vinod-pics/dyeing/history.png");
+        setProcessBackgrounds([
+          "/vinod-pics/dyeing/process/1.png",
+          "/vinod-pics/dyeing/process/2.png",
+          "/vinod-pics/dyeing/process/3.png",
+          "/vinod-pics/dyeing/process/4.png",
+          "/vinod-pics/dyeing/process/5.png",
+        ]);
         break;
       case "block printing":
       case "block_printing":
@@ -58,11 +94,19 @@ const LeftSection = ({ selectedCraft }) => {
         setIntroBackground("/vinod-pics/block-printing/introduction.png");
         setDesignBackground("/vinod-pics/block-printing/design.png");
         setHistoryBackground("/vinod-pics/block-printing/history.png");
+        setProcessBackgrounds([
+          "/vinod-pics/block-printing/process/1.png",
+          "/vinod-pics/block-printing/process/2.png",
+          "/vinod-pics/block-printing/process/3.png",
+          "/vinod-pics/block-printing/process/4.png",
+          "/vinod-pics/block-printing/process/5.png",
+        ]);
         break;
       default:
         setIntroBackground("");
         setDesignBackground("");
         setHistoryBackground("");
+        setProcessBackgrounds([]);
     }
 
     fetch("/english-data.json")
@@ -140,9 +184,19 @@ const LeftSection = ({ selectedCraft }) => {
       width: "5rem",
     },
     expanded: {
-      borderRadius: "3rem",
+      borderRadius: "0.8rem",
       height: "10rem",
       width: "100%",
+    },
+  };
+
+  // Animation variants for the overlay div to match the circle shape
+  const overlayVariants = {
+    collapsed: {
+      borderRadius: "50%",
+    },
+    expanded: {
+      borderRadius: "0.8rem",
     },
   };
 
@@ -233,7 +287,7 @@ const LeftSection = ({ selectedCraft }) => {
                     layout
                   >
                     <motion.div
-                      className={`select-none overflow-hidden bg-black/40 border-1 border-[#f2e9c0] flex items-center justify-center mb-2`}
+                      className={`select-none overflow-hidden bg-black/40 border-1 border-[#f2e9c0] flex items-center justify-center mb-2 relative`}
                       variants={circleVariants}
                       initial="collapsed"
                       animate={
@@ -241,9 +295,26 @@ const LeftSection = ({ selectedCraft }) => {
                       }
                       transition={{ type: "spring", damping: 20 }}
                       onClick={(e) => handleCircleClick(index, e)}
+                      style={{
+                        backgroundImage: processBackgrounds[index]
+                          ? `url(${processBackgrounds[index]})`
+                          : "none",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                      }}
                     >
+                      <motion.div
+                        className="absolute inset-0 bg-black/50 z-0"
+                        variants={overlayVariants}
+                        initial="collapsed"
+                        animate={
+                          selectedCircle === index ? "expanded" : "collapsed"
+                        }
+                        transition={{ type: "spring", damping: 20 }}
+                      />
                       {selectedCircle === index ? (
-                        <div className="p-4 text-white w-full h-full flex flex-col">
+                        <div className="p-4 text-white w-full h-full flex flex-col relative z-10">
                           <motion.h3
                             className="font-semibold mb-2 text-center"
                             initial={{ opacity: 0 }}
@@ -267,7 +338,7 @@ const LeftSection = ({ selectedCraft }) => {
                         </div>
                       ) : (
                         <motion.span
-                          className="text-white text-xs text-center px-1"
+                          className="text-white text-xs text-center px-1 relative z-10"
                           whileHover={{ scale: 1.1 }}
                         >
                           {getLocalizedText(process, "name") || index + 1}
@@ -302,7 +373,7 @@ const LeftSection = ({ selectedCraft }) => {
                     layout
                   >
                     <motion.div
-                      className={`select-none overflow-hidden bg-black/40 border-1 border-[#f2e9c0] flex items-center justify-center mb-2`}
+                      className={`select-none overflow-hidden bg-black/40 border-1 border-[#f2e9c0] flex items-center justify-center mb-2 relative`}
                       variants={circleVariants}
                       initial="collapsed"
                       animate={
@@ -310,9 +381,26 @@ const LeftSection = ({ selectedCraft }) => {
                       }
                       transition={{ type: "spring", damping: 20 }}
                       onClick={(e) => handleCircleClick(index, e)}
+                      style={{
+                        backgroundImage: processBackgrounds[index]
+                          ? `url(${processBackgrounds[index]})`
+                          : "none",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                      }}
                     >
+                      <motion.div
+                        className="absolute inset-0 bg-black/50 z-0"
+                        variants={overlayVariants}
+                        initial="collapsed"
+                        animate={
+                          selectedCircle === index ? "expanded" : "collapsed"
+                        }
+                        transition={{ type: "spring", damping: 20 }}
+                      />
                       <motion.span
-                        className="text-white text-sm text-center px-1"
+                        className="text-white text-sm text-center px-1 relative z-10"
                         whileHover={{ scale: 1.1 }}
                       >
                         {step}
