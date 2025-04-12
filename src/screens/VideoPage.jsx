@@ -129,7 +129,7 @@ const VideoPage = () => {
               onContextMenu={(e) => e.preventDefault()} 
               className="w-full h-full object-cover "
             >
-              <source src="/V.mp4" type="video/mp4" />
+              <source src="/v2.mp4" type="video/mp4" />
               {content[language].videoFallbackText}
             </video>
           </div>
