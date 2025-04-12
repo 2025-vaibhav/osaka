@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLanguage } from "../LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 
-const MiddleSection = ({ selectedCraft }) => {
-  const { language } = useLanguage();
+const MiddleSection = ({ selectedCraft, sectionId }) => {
+  const { language } = useLanguage(sectionId);
   const [craftData, setCraftData] = useState(null);
   const [heroImage, setHeroImage] = useState("");
   const [slideImages, setSlideImages] = useState([]);
