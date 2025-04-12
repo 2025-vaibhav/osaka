@@ -1,12 +1,10 @@
 import { motion, useAnimation } from "framer-motion";
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../LanguageContext";
 
-const SelectCraft = () => {
-  const navigate = useNavigate();
+const SelectCraft = ({ onNavigate, sectionId }) => {
   const controls = useAnimation();
-  const { language } = useLanguage();
+  const { language } = useLanguage(sectionId);
 
   const totalCircles = 5;
   const containerSize = 530;
@@ -45,7 +43,11 @@ const SelectCraft = () => {
     controls.start("visible");
   }, [controls]);
 
-  // Animation variants (unchanged)
+  const handleCraftSelect = (craft) => {
+    onNavigate('info-page', { selectedCraft: craft });
+  };
+
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -114,22 +116,27 @@ const SelectCraft = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="relative min-h-screen bg-transparent text-[#D4D090] flex flex-col items-center justify-center px-4 py-8 overflow-hidden"
+      className="relative min-h-full bg-transparent text-[#f2e9c9] flex flex-col items-center justify-center px-4 py-8 overflow-hidden"
     >
-      <h2 className="text-[32px] absolute top-[30px] font-serif mb-14 text-center z-10">
+      <h2 className="text-xl absolute top-5 md:text-4xl font-serif mb-14 text-center z-10">
         {crafts[language].title}
       </h2>
 
+      <img
+        src="black.png"
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-150"
+      />
+
       <button
-        onClick={() => navigate("/video-page")}
-        className="w-[80px] h-[32px] text-[8px] absolute top-[54px] left-[100px] bg-black/50 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
+        onClick={() => onNavigate('video-page')}
+        className="md:px-8 px-2 md:py-3 py-2 absolute md:top-10 top-12 md:left-10 left-6 bg-black/50 md:w-28 w-20 md:text-base text-[12px] border border-white rounded-full text-white hover:bg-white hover:text-black transition"
       >
         {crafts[language].back}
       </button>
 
       <div className="relative flex items-center">
         {/* Left Boxes */}
-        <div className="flex fixed flex-col justify-center gap-16 left-60 z-10">
+        <div className="flex absolute h-full flex-col justify-center gap-20 z-10 border border-red-500">
           {crafts[language].leftBoxes.map((item, index) => (
             <motion.button
               key={index}
@@ -137,10 +144,8 @@ const SelectCraft = () => {
               initial="hidden"
               animate="visible"
               variants={buttonVariants}
-              onClick={() =>
-                navigate("/info-page", { state: { selectedCraft: item } })
-              }
-              className={`gradient-box small-card w-[174px] h-[68px] flex justify-center items-center border-gray-400 rounded-md text-center ${
+              onClick={() => handleCraftSelect(item)}
+              className={`gradient-box border border-red-500 small-card px-4 py-2 h-16 flex justify-center items-center border-gray-400 rounded-md text-center w-40 ${
                 index === 1 ? "-ml-12" : ""
               }`}
               whileHover={{
@@ -155,7 +160,7 @@ const SelectCraft = () => {
 
         {/* Central Circle with Outer Circles */}
         <motion.div
-          className="relative"
+          className="relative border border-white"
           style={{ width: `${containerSize}px`, height: `${containerSize}px` }}
         >
           {/* Center Circle */}
@@ -221,7 +226,7 @@ const SelectCraft = () => {
         </motion.div>
 
         {/* Right Boxes */}
-        <div className="flex fixed flex-col justify-center gap-16 right-48 z-10">
+        <div className="flex absolute flex-col justify-center gap-16 right-48 z-10">
           {crafts[language].rightBoxes.map((item, index) => (
             <motion.button
               key={index}
@@ -229,10 +234,8 @@ const SelectCraft = () => {
               initial="hidden"
               animate="visible"
               variants={rightButtonVariants}
-              onClick={() =>
-                navigate("/info-page", { state: { selectedCraft: item } })
-              }
-              className={`gradient-box small-card w-[174px] h-[68px] flex justify-center items-center border-gray-400 rounded-md text-center ${
+              onClick={() => handleCraftSelect(item)}
+              className={`gradient-box small-card px-4 py-2 h-16 flex justify-center items-center border-gray-400 rounded-md text-center w-40 ${
                 index === 1 ? "ml-12" : ""
               }`}
               whileHover={{

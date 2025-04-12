@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import LeftSection from "../columns/LeftSection";
 import MiddleSection from "../columns/MiddleSection";
 import RightSection from "../columns/RightSection";
@@ -13,10 +13,9 @@ import charkhaIcon from "/craft/1.png";
 import loomWeavingIcon from "/craft/6.png";
 import blockPrintingIcon from "/craft/5.png";
 
-export default function InfoPage() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { language, setLanguage } = useLanguage();
+export default function InfoPage({ onNavigate, sectionId }) {
+  const [searchParams] = useSearchParams();
+  const { language, setLanguage } = useLanguage(sectionId);
 
   // Map display names to JSON data names for both languages
   const craftMapping = {
@@ -73,10 +72,10 @@ export default function InfoPage() {
     return targetLang === "english" ? "Bidriware" : "ビドリ";
   };
 
-  // Get selected craft from navigation state or default
+  // Get selected craft from URL parameters or default
   const [selectedCraft, setSelectedCraft] = useState(() => {
-    const fromState = location.state?.selectedCraft;
-    if (fromState) return fromState;
+    const fromParams = searchParams.get(`${sectionId}_selectedCraft`);
+    if (fromParams) return fromParams;
     return language === "english" ? "Bidriware" : "ビドリ";
   });
 
@@ -111,8 +110,14 @@ export default function InfoPage() {
     setLanguage(newLanguage);
   };
 
+  // Handle craft selection with URL parameter update
+  const handleCraftSelect = (craft) => {
+    setSelectedCraft(craft);
+    onNavigate('info-page', { selectedCraft: craft });
+  };
+
   return (
-    <div className="w-full h-screen gradient-box py-6 px-10 flex flex-col overflow-hidden">
+    <div className="w-full h-full gradient-box py-6 px-10 flex flex-col overflow-hidden">
       {/* Main Content Area */}
       <div className="flex flex-grow overflow-hidden mb-4">
         <LeftSection selectedCraft={craftMapping[language][selectedCraft]} />
@@ -127,7 +132,7 @@ export default function InfoPage() {
           <div className="w-32 flex justify-center">
             <button
               className="flex items-center z-10 text-white gap-2"
-              onClick={() => navigate("/")}
+              onClick={() => onNavigate('home')}
             >
               <i className="bi bi-house text-4xl"></i>
               <span className="text-lg whitespace-nowrap">
@@ -144,7 +149,7 @@ export default function InfoPage() {
                 return (
                   <div
                     key={index}
-                    onClick={() => setSelectedCraft(craft.name)}
+                    onClick={() => handleCraftSelect(craft.name)}
                     className="flex flex-col py-5 items-center cursor-pointer"
                     style={{ minWidth: "90px" }}
                   >

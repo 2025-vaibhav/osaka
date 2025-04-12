@@ -1,25 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&display=swap");
-
-.font-serif {
-  font-family: "Ibarra Real Nova", serif;
-  /* font-optical-sizing: auto;
-  font-style: normal; */
-}
-
 .gradient-box {
   background: linear-gradient(to right, #1e1e1e, #2f3b2f);
 }
 
 .cut-card {
-  background-image: url("/ii.png");
+  background-image: url("green.png");
   background-position: center;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
 /* small card */
 .small-card {
-  background-image: url("/ii.png");
+  background-image: url("green.png");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -67,21 +59,18 @@ button {
 
 /* v- scrollbar */
 .V-Scroll::-webkit-scrollbar {
-  width: 4px;
+    width: 4px;
 }
 
 .V-Scroll::-webkit-scrollbar-thumb {
-  background-color: #d4d090;
-}
-
-.V-Scroll::-webkit-scrollbar-track {
-  background-color: #ffffff0e;
+    background-color: #D4D090;
 }
 
 /* circuit-board */
-.circuit-board {
+.circuit-board{
   background-image: url("/circuit.png");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
 }
+

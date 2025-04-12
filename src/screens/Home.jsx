@@ -1,41 +1,35 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../LanguageContext";
 
-const Home = () => {
-  const navigate = useNavigate();
-  const { setLanguage } = useLanguage();
+const Home = ({ onNavigate, sectionId }) => {
+  const { language, setLanguage } = useLanguage(sectionId);
 
   const handleLanguageSelect = (lang) => {
     setLanguage(lang);
-    navigate("/video-page");
+    onNavigate('video-page');
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-transparent px-4 relative overflow-hidden">
+    <div className="flex items-center justify-center h-full bg-transparent px-4 relative overflow-hidden">
       {/* Content */}
-      <div className="gradient-box cut-card scale-125 text-white shadow-lg text-center space-y-8  border-gray-700 relative z-10 w-[502px] h-[240px]">
-        <h1 className="text-[32px] font-serif mt-[50px] text-[#D4D090]">
+      <div className="gradient-box cut-card text-white shadow-lg px-12 py-10 text-center space-y-8 max-w-[600px] w-full border-gray-700 relative z-10">
+        <h1 className="text-4xl font-serif text-[#f2e9c9]">
           Threaded Frequencies
         </h1>
-        <div>
-          <p className="text-[11.4px] relative mt-2 translate-y-[-15px]">
-            Choose Your preferred Language
-          </p>
-          <div className="flex justify-center gap-6">
-            <button
-              onClick={() => handleLanguageSelect("english")}
-              className="border border-white rounded-full text-white hover:bg-white hover:text-black transition text-[11.4px] h-[40px] w-[140px]"
-            >
-              English
-            </button>
-            <button
-              onClick={() => handleLanguageSelect("japanese")}
-              className="border border-white rounded-full text-white hover:bg-white hover:text-black transition text-[11.4px] h-[40px] w-[140px]"
-            >
-              日本語
-            </button>
-          </div>
+        <p className="text-base">Choose Your preferred Language</p>
+        <div className="flex justify-center gap-6">
+          <button
+            onClick={() => handleLanguageSelect("english")}
+            className="px-8 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
+          >
+            English
+          </button>
+          <button
+            onClick={() => handleLanguageSelect("japanese")}
+            className="px-8 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
+          >
+            日本語
+          </button>
         </div>
       </div>
     </div>
