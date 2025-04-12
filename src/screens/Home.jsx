@@ -15,25 +15,27 @@ const Home = () => {
     <div className="flex items-center justify-center h-screen bg-transparent px-4 relative overflow-hidden">
       {/* Content */}
       <div className="gradient-box cut-card text-white shadow-lg text-center space-y-8  border-gray-700 relative z-10 w-[502px] h-[240px]">
-        <h1 className="text-[32px] font-serif text-[#D4D090]">
+        <h1 className="text-[32px] font-serif mt-[50px] text-[#D4D090]">
           Threaded Frequencies
         </h1>
-        <p className="text-[11.4px] relative mt-5">
-          Choose Your preferred Language
-        </p>
-        <div className="flex justify-center gap-6">
-          <button
-            onClick={() => handleLanguageSelect("english")}
-            className="border border-white rounded-full text-white hover:bg-white hover:text-black transition text-[11.4px] h-[40px] w-[140px]"
-          >
-            English
-          </button>
-          <button
-            onClick={() => handleLanguageSelect("japanese")}
-            className="border border-white rounded-full text-white hover:bg-white hover:text-black transition text-[11.4px] h-[40px] w-[140px]"
-          >
-            日本語
-          </button>
+        <div>
+          <p className="text-[11.4px] relative mt-2 translate-y-[-15px]">
+            Choose Your preferred Language
+          </p>
+          <div className="flex justify-center gap-6">
+            <button
+              onClick={() => handleLanguageSelect("english")}
+              className="border border-white rounded-full text-white hover:bg-white hover:text-black transition text-[11.4px] h-[40px] w-[140px]"
+            >
+              English
+            </button>
+            <button
+              onClick={() => handleLanguageSelect("japanese")}
+              className="border border-white rounded-full text-white hover:bg-white hover:text-black transition text-[11.4px] h-[40px] w-[140px]"
+            >
+              日本語
+            </button>
+          </div>
         </div>
       </div>
     </div>
