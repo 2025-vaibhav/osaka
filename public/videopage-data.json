@@ -1,0 +1,26 @@
+{
+  "english": {
+    "title": "Threaded Frequencies",
+    "subtitle": "India Pavilion Bharat, Expo 2025 Osaka",
+    "paragraphs": [
+      "At the heart of this exhibit is the emerging field of E-Textiles—a fusion of tradition and technology that redefines how we experience fabric. In India, where craft is a centuries-old language of identity and expression, innovation is no longer separate from heritage. Instead, it is a powerful tool that helps it thrive.",
+      "In Threaded Frequencies, tradition doesn't resist change—it leads it. This is India's vision for the future of making: sustainable, inclusive, and deeply rooted in its cultural DNA. At first glance, it resembles textile-based artwork. However, on closer interaction, it reveals itself as a touch-sensitive embroidered circuit board. Each interaction activates embedded sensors, triggering sounds of artisanal practices. Here every thread carries both memory and meaning, and every craft is an instrument in a global symphony of progress.",
+      "E-Textiles showcase how smart materials, embedded sensors, and responsive design can be woven into handcrafted fabrics—opening new realms of possibility for artisans and audiences alike. This is not a departure from the past, but a leap forward built on its foundation. By embracing innovation, craftspeople are entering spaces once reserved for high-tech industries—wearables, health, sustainability, and digital interactivity.",
+      "Technology also plays a vital role in amplifying craft—whether through AI-assisted design, blockchain-based certification for authenticity, or digital storytelling that gives voice to artisan communities. The result is a powerful cultural and economic shift: crafts that are not only beautiful, but also intelligent, functional, and globally connected."
+    ],
+    "note": "NOTE: The Threaded Frequencies, is an interactive touch sensitive handcrafted fabric that invites you to explore the tactility of the fabric. Lightly tap on one the highlighted parts and listen to the music of Indian crafts. Wait for a second before trying another sensor and transport yourself to an innovative vibrant craft community in India.",
+    "videoFallbackText": "Your browser does not support the video tag."
+  },
+  "japanese": {
+    "title": "スレッデッド・フリークエンシーズ",
+    "subtitle": "インド・パビリオン 大阪・関西万博2025",
+    "paragraphs": [
+      "この展示の中心にあるのは、「E-テキスタイル」という新興分野です。伝統とテクノロジーが融合し、布の体験を再定義します。インドでは、クラフトは何世紀にもわたってアイデンティティと表現の言語として受け継がれてきました。今、イノベーションは伝統と切り離されたものではなく、それを支え、発展させる力となっています。",
+      "「スレッデッド・フリークエンシーズ」では、伝統は変化に抗うのではなく、それを先導します。これは、持続可能で包括的、そして文化的DNAに深く根ざした「未来のものづくり」に対するインドのビジョンです。一見するとテキスタイルアートのように見えますが、触れてみると、それは刺繍されたタッチセンサー回路であることが明らかになります。触れるたびに埋め込まれたセンサーが作動し、職人技の音が鳴り響きます。一つひとつの糸には記憶と意味が込められ、すべてのクラフトがグローバルな進歩の交響曲の一部となります。",
+      "E-テキスタイルは、スマート素材、埋め込み型センサー、反応型デザインを手仕事の布に織り込むことで、職人と観客の両方に新しい可能性を開きます。これは過去からの決別ではなく、その基盤の上に築かれた未来への飛躍です。イノベーションを受け入れることで、職人たちはかつてハイテク産業だけに許されていた領域—ウェアラブル、ヘルスケア、サステナビリティ、デジタル・インタラクティビティ—に進出しています。",
+      "テクノロジーはクラフトを拡張する重要な役割も担っています。AIによるデザイン支援、真正性を保証するブロックチェーン認証、職人コミュニティに声を与えるデジタル・ストーリーテリングなどがその一例です。美しさだけでなく、知性、機能性、そしてグローバルなつながりを持つクラフトへと、大きな文化的・経済的変革が起きています。"
+    ],
+    "note": "注記： Threaded Frequenciesは、触覚を通してインドのクラフト文化を体験できる、インタラクティブな手作りのタッチセンサー付きファブリックです。強調された部分に軽く触れてください。インドのクラフトの音が響きます。別のセンサーに触れる前に1秒待って、新しい音の世界へと旅立ちましょう。",
+    "videoFallbackText": "お使いのブラウザはビデオタグをサポートしていません。"
+  }
+}

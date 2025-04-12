@@ -1,0 +1,76 @@
+.gradient-box {
+  background: linear-gradient(to right, #1e1e1e, #2f3b2f);
+}
+
+.cut-card {
+  background-image: url("green.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* small card */
+.small-card {
+  background-image: url("green.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+/* video in background */
+
+.loop {
+  position: relative;
+  overflow: hidden;
+}
+
+.loop video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* scrollbar */
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 1px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #f2e9c9;
+  border-radius: 2px;
+}
+
+.custom-scrollbar {
+  scrollbar-color: #f2e9c9 transparent;
+  scrollbar-width: thin;
+}
+
+/* v- scrollbar */
+.V-Scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.V-Scroll::-webkit-scrollbar-thumb {
+    background-color: #D4D090;
+}
+
+/* circuit-board */
+.circuit-board{
+  background-image: url("/circuit.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
