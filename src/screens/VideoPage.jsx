@@ -6,7 +6,7 @@ import { useLanguage } from "../LanguageContext";
 const VideoPage = ({ onNavigate, sectionId }) => {
   const { language } = useLanguage(sectionId);
   const scrollContainerRef = useRef(null);
-  const videoContainerRef = useRef(null);
+  const videoRef = useRef(null);
   const contentContainerRef = useRef(null);
   const [content, setContent] = useState(null);
   const [initialVideoWidth, setInitialVideoWidth] = useState(0);
@@ -44,8 +44,7 @@ const VideoPage = ({ onNavigate, sectionId }) => {
     const scrollHeight = container.scrollHeight;
     const clientHeight = container.clientHeight;
 
-    // Add 20px buffer to prevent premature triggering
-    return scrollHeight - clientHeight - scrollTop < 20;
+    return scrollHeight - clientHeight - scrollTop < 5;
   };
 
   useEffect(() => {
@@ -62,8 +61,18 @@ const VideoPage = ({ onNavigate, sectionId }) => {
 
       // Update video scale transform
       const scale = 1 - scrollPercentage * 0.5; // Reduce by max 50%
-      if (videoContainerRef.current) {
-        videoContainerRef.current.style.transform = `scale(${scale})`;
+
+      if (videoRef.current) {
+        // Scale the video
+        videoRef.current.style.transform = `scale(${scale})`;
+
+        // Calculate shrinking amount to adjust content position
+        const videoHeight = (initialVideoWidth * 9) / 16;
+        const heightReduction = videoHeight * (1 - scale);
+
+        // Move the scroll container up to eliminate the gap
+        // This will push content up dynamically as video shrinks
+        scrollContainer.style.marginTop = `-${heightReduction * 0.5}px`;
       }
 
       setFullyScrolled(checkIfFullyScrolled());
@@ -81,7 +90,7 @@ const VideoPage = ({ onNavigate, sectionId }) => {
     if (content && scrollContainerRef.current) {
       const container = scrollContainerRef.current;
       const isCurrentlyScrollable =
-        container.scrollHeight > container.clientHeight + 5;
+        container.scrollHeight > container.clientHeight + 2;
       setScrollable(isCurrentlyScrollable);
       setFullyScrolled(!isCurrentlyScrollable || checkIfFullyScrolled());
     }
@@ -124,52 +133,56 @@ const VideoPage = ({ onNavigate, sectionId }) => {
 
         <hr className="mb-5 w-[600px] mx-auto" />
 
-        {/* Video with transform scaling */}
-        <div className="flex justify-center mb-4">
+        {/* Fixed Height Container to hold both video and content */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Video Container */}
+          <div className="flex justify-center mb-4">
+            <div
+              className="origin-center"
+              style={{
+                width: `${initialVideoWidth}px`,
+                height: `${(initialVideoWidth * 9) / 16}px`,
+              }}
+            >
+              <video
+                ref={videoRef}
+                autoPlay
+                loop
+                muted
+                playsInline
+                disablePictureInPicture
+                className="w-full h-full object-cover origin-center"
+                style={{
+                  transition: "transform 0.2s ease-out",
+                }}
+              >
+                <source src="/V.mp4" type="video/mp4" />
+                {content[language].videoFallbackText}
+              </video>
+            </div>
+          </div>
+
+          {/* Scrollable Content with Dynamic Height */}
           <div
-            ref={videoContainerRef}
-            className="bg-black border border-gray-400 origin-center"
+            ref={scrollContainerRef}
+            className="overflow-y-auto V-Scroll pr-2 flex-1"
             style={{
-              width: `${initialVideoWidth}px`,
-              height: `${(initialVideoWidth * 9) / 16}px`,
-              transition: "transform 0.2s ease-out",
+              transition: "margin-top 0.2s ease-out",
+              minHeight: "100px",
             }}
           >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              disablePictureInPicture
-              className="w-full h-full object-cover"
+            <div
+              ref={contentContainerRef}
+              className="w-[70%] text-gray-100 mx-auto text-justify"
             >
-              <source src="/V.mp4" type="video/mp4" />
-              {content[language].videoFallbackText}
-            </video>
-          </div>
-        </div>
-
-        {/* Scrollable Area */}
-        <div
-          ref={scrollContainerRef}
-          className="overflow-y-auto V-Scroll pr-2 flex-1 text-justify"
-          style={{
-            minHeight: "100px",
-            maxHeight: "calc(100% - 260px)",
-            paddingBottom: "20px", // Increased buffer
-          }}
-        >
-          <div
-            ref={contentContainerRef}
-            className="w-[70%] text-gray-100 mx-auto"
-          >
-            {content[language].paragraphs.map((paragraph, index) => (
-              <p key={index} className="mb-4">
-                {paragraph}
-              </p>
-            ))}
-            <p className="mb-4 italic text-sm">{content[language].note}</p>
-            <div className="h-8"></div> {/* Increased buffer */}
+              {content[language].paragraphs.map((paragraph, index) => (
+                <p key={index} className="mb-4">
+                  {paragraph}
+                </p>
+              ))}
+              <p className="mb-4 italic text-sm">{content[language].note}</p>
+              <div className="h-2"></div>
+            </div>
           </div>
         </div>
 
