@@ -116,7 +116,7 @@ const SelectCraft = () => {
       variants={containerVariants}
       className="relative min-h-screen bg-transparent text-[#f2e9c9] flex flex-col items-center justify-center px-4 py-8 overflow-hidden"
     >
-      <h2 className="text-3xl absolute top-5 md:text-4xl font-serif mb-14 text-center z-10">
+      <h2 className="text-[32px] absolute top-[30px] font-serif mb-14 text-center z-10">
         {crafts[language].title}
       </h2>
 
@@ -127,7 +127,7 @@ const SelectCraft = () => {
 
       <button
         onClick={() => navigate("/video-page")}
-        className="px-8 py-3 absolute top-10 left-10 bg-black/50 w-28 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
+        className="w-[80px] h-[32px] text-[8px] absolute top-[54px] left-[100px] bg-black/50 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
       >
         {crafts[language].back}
       </button>
@@ -145,7 +145,7 @@ const SelectCraft = () => {
               onClick={() =>
                 navigate("/info-page", { state: { selectedCraft: item } })
               }
-              className={`gradient-box small-card px-4 py-2 h-16 flex justify-center items-center border-gray-400 rounded-md text-center w-40 ${
+              className={`gradient-box small-card w-[174px] h-[68px] flex justify-center items-center border-gray-400 rounded-md text-center ${
                 index === 1 ? "-ml-12" : ""
               }`}
               whileHover={{
@@ -237,7 +237,7 @@ const SelectCraft = () => {
               onClick={() =>
                 navigate("/info-page", { state: { selectedCraft: item } })
               }
-              className={`gradient-box small-card px-4 py-2 h-16 flex justify-center items-center border-gray-400 rounded-md text-center w-40 ${
+              className={`gradient-box small-card w-[174px] h-[68px] flex justify-center items-center border-gray-400 rounded-md text-center ${
                 index === 1 ? "ml-12" : ""
               }`}
               whileHover={{

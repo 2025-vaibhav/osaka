@@ -3,10 +3,12 @@
 }
 
 .cut-card {
-  background-image: url("green.png");
+  /* background-image: url("green.png"); */
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  width: 502px;
+  height: 240px;
 }
 
 /* small card */
@@ -59,18 +61,21 @@ button {
 
 /* v- scrollbar */
 .V-Scroll::-webkit-scrollbar {
-    width: 4px;
+  width: 4px;
 }
 
 .V-Scroll::-webkit-scrollbar-thumb {
-    background-color: #D4D090;
+  background-color: #d4d090;
+}
+
+.V-Scroll::-webkit-scrollbar-track {
+  background-color: #ffffff0e;
 }
 
 /* circuit-board */
-.circuit-board{
+.circuit-board {
   background-image: url("/circuit.png");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
 }
-

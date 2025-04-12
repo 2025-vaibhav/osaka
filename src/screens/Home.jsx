@@ -14,21 +14,21 @@ const Home = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-transparent px-4 relative overflow-hidden">
       {/* Content */}
-      <div className="gradient-box cut-card text-white shadow-lg px-12 py-10 text-center space-y-8 max-w-[600px] w-full border-gray-700 relative z-10">
-        <h1 className="text-4xl font-serif text-[#f2e9c9]">
+      <div className="gradient-box cut-card text-white shadow-lg text-center space-y-8 max-w-[600px] w-full border-gray-700 relative z-10">
+        <h1 className="text-[32px] font-serif text-[#f2e9c9]">
           Threaded Frequencies
         </h1>
-        <p className="text-base">Choose Your preferred Language</p>
+        <p className="text-[11.4px] relative mt-5">Choose Your preferred Language</p>
         <div className="flex justify-center gap-6">
           <button
             onClick={() => handleLanguageSelect("english")}
-            className="px-8 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
+            className="border border-white rounded-full text-white hover:bg-white hover:text-black transition text-[11.4px] h-[40px] w-[140px]"
           >
             English
           </button>
           <button
             onClick={() => handleLanguageSelect("japanese")}
-            className="px-8 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
+            className="border border-white rounded-full text-white hover:bg-white hover:text-black transition text-[11.4px] h-[40px] w-[140px]"
           >
             日本語
           </button>
