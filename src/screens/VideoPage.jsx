@@ -77,11 +77,11 @@ const VideoPage = () => {
 
   return (
     <div className="w-screen h-screen bg-transparent text-[#D4D090] flex justify-center items-center overflow-hidden">
-      <div className="gradient-box w-[856px] h-[620px] rounded-4xl p-8 relative shadow-lg flex flex-col">
+      <div className="gradient-box w-[85vw] h-[80vh] rounded-4xl p-8 relative shadow-lg flex flex-col">
         {/* Back Button */}
         <button
           onClick={() => navigate("/")}
-          className="w-[80px] h-[32px] text-[8px] absolute top-[27px] left-[30px] border border-white rounded-full text-white hover:bg-white hover:text-black transition"
+          className="w-[100px] h-[50px] text-xl absolute top-[27px] left-[30px] border border-white rounded-full text-white hover:bg-white hover:text-black transition"
         >
           {language === "english" ? "Back" : "戻る"}
         </button>
@@ -96,15 +96,15 @@ const VideoPage = () => {
 
         {/* Heading - Fixed position */}
         <div className="flex flex-col items-center mb-4">
-          <h1 className="text-[32px] font-serif text-center mb-2">
+          <h1 className="text-[45px] font-serif text-center mb-2">
             {content[language].title}
           </h1>
-          <p className="text-center text-[14px] font-serif text-gray-100">
+          <p className="text-center text-[24px] font-serif text-gray-100">
             {content[language].subtitle}
           </p>
         </div>
 
-        <hr className="mb-5 w-[320px] mx-auto" />
+        <hr className="mb-5 w-[500px] mx-auto" />
 
         {/* Video with default controls */}
         <div className="flex justify-center mb-4">
@@ -140,7 +140,7 @@ const VideoPage = () => {
           ref={scrollContainerRef}
           className="overflow-y-auto V-Scroll pr-2 flex-grow text-justify"
         >
-          <div className="w-[544px] text-[14px] text-gray-100 mx-auto">
+          <div className="w-[744px] text-[14px] text-gray-100 mx-auto">
             {/* Text Content */}
             {content[language].paragraphs.map((paragraph, index) => (
               <p key={index} className="mb-4">
@@ -156,7 +156,7 @@ const VideoPage = () => {
           <button
             onClick={() => navigate("/select-craft")}
             disabled={!isScrolledToBottom}
-            className={`h-[36px] w-[122px] text-[10px] border rounded-full transition ${
+            className={`h-[45px] w-[122px] text-xl border rounded-full transition ${
               isScrolledToBottom
                 ? "border-white text-white hover:bg-white hover:text-black"
                 : "border-gray-500 text-gray-500 cursor-not-allowed"

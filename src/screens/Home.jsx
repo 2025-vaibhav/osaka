@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-transparent px-4 relative overflow-hidden">
       {/* Content */}
-      <div className="gradient-box cut-card text-white shadow-lg text-center space-y-8  border-gray-700 relative z-10 w-[502px] h-[240px]">
+      <div className="gradient-box cut-card scale-125 text-white shadow-lg text-center space-y-8  border-gray-700 relative z-10 w-[502px] h-[240px]">
         <h1 className="text-[32px] font-serif mt-[50px] text-[#D4D090]">
           Threaded Frequencies
         </h1>
