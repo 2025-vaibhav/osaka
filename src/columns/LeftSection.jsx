@@ -1,8 +1,8 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLanguage } from "../LanguageContext";
-import { motion, AnimatePresence } from "framer-motion";
 
 const LeftSection = ({ selectedCraft }) => {
   const { language } = useLanguage();
@@ -180,8 +180,8 @@ const LeftSection = ({ selectedCraft }) => {
   const circleVariants = {
     collapsed: {
       borderRadius: "50%",
-      height: "5rem",
-      width: "5rem",
+      height: "10rem",
+      width: "10rem",
     },
     expanded: {
       borderRadius: "0.8rem",
@@ -205,7 +205,7 @@ const LeftSection = ({ selectedCraft }) => {
       {/* Introduction Panel */}
       <div
         className={`rounded-xl overflow-hidden relative bg-black/40 border-1 border-[#f2e9c9] transition-all duration-700 ease-in-out ${
-          expandedPanel === "introduction" ? "h-80" : "h-32"
+          expandedPanel === "introduction" ? "h-160" : "h-64"
         }`}
         onClick={() => togglePanel("introduction")}
         style={{
@@ -429,10 +429,10 @@ const LeftSection = ({ selectedCraft }) => {
       <div
         className={`rounded-xl overflow-hidden relative bg-black/40 border-1 border-[#f2e9c0] transition-all duration-700 ease-in-out ${
           expandedPanel === "designs"
-            ? "h-64"
+            ? "h-128"
             : expandedPanel === "history"
             ? "h-0"
-            : "h-32"
+            : "h-64"
         }`}
         onClick={() => togglePanel("designs")}
         style={{
@@ -450,7 +450,7 @@ const LeftSection = ({ selectedCraft }) => {
           <div
             className={`text-gray-300 text-sm overflow-hidden ${
               expandedPanel === "designs"
-                ? "h-40 overflow-y-auto custom-scrollbar"
+                ? "h-80 overflow-y-auto custom-scrollbar"
                 : expandedPanel === "history"
                 ? "h-0"
                 : "line-clamp-1"
@@ -490,10 +490,10 @@ const LeftSection = ({ selectedCraft }) => {
       <div
         className={`rounded-xl overflow-hidden relative bg-black/40 border-1 border-[#f2e9c0] transition-all duration-700 ease-in-out ${
           expandedPanel === "history"
-            ? "h-64"
+            ? "h-128"
             : expandedPanel === "designs" || expandedPanel === "introduction"
             ? "h-0"
-            : "h-32"
+            : "h-64"
         }`}
         onClick={() => togglePanel("history")}
         style={{
