@@ -4,8 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLanguage } from "../LanguageContext";
 
-const LeftSection = ({ selectedCraft }) => {
-  const { language } = useLanguage();
+const LeftSection = ({ selectedCraft, sectionId }) => {
+  const { language } = useLanguage(sectionId);
   const [craftData, setCraftData] = useState(null);
   const [introText, setIntroText] = useState("");
   const [designText, setDesignText] = useState("");

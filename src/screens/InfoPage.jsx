@@ -122,9 +122,9 @@ export default function InfoPage({ onNavigate, sectionId }) {
     <div className="w-full h-full gradient-box p-10 flex flex-col overflow-hidden">
       {/* Main Content Area */}
       <div className="flex flex-grow overflow-hidden mb-4">
-        <LeftSection selectedCraft={craftMapping[language][selectedCraft]} />
-        <MiddleSection selectedCraft={selectedCraft} />
-        <RightSection selectedCraft={craftMapping[language][selectedCraft]} />
+        <LeftSection sectionId={sectionId} selectedCraft={craftMapping[language][selectedCraft]} />
+        <MiddleSection sectionId={sectionId} selectedCraft={selectedCraft} />
+        <RightSection sectionId={sectionId} selectedCraft={craftMapping[language][selectedCraft]} />
       </div>
 
       {/* Bottom Navigation - Fixed with stable positioning */}
