@@ -3,8 +3,8 @@ import Xarrow from "react-xarrows";
 import { useLanguage } from "../LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 
-const RightSection = ({ selectedCraft }) => {
-  const { language } = useLanguage();
+const RightSection = ({ selectedCraft, sectionId }) => {
+  const { language } = useLanguage(sectionId);
   const [craftData, setCraftData] = useState(null);
   const [toolsText, setToolsText] = useState("");
   const [activeText, setActiveText] = useState(null);
