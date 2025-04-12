@@ -29,10 +29,10 @@ const RightSection = ({ selectedCraft }) => {
   const textBoxIds = ["text1", "text2", "text3", "text4"];
 
   const buttonPositions = [
-    { top: 278, left: 72 },
-    { top: 352, right: 169 },
-    { top: 322, right: 92 },
-    { top: 212, right: 60 },
+    { top: 397, left: 86 },
+    { top: 488, right: 203 },
+    { top: 450, right: 110 },
+    { top: 318, right: 72 },
   ];
 
   useEffect(() => {
@@ -102,7 +102,7 @@ const RightSection = ({ selectedCraft }) => {
   };
 
   return (
-    <div className="w-[30%] flex flex-col gap-4 pl-4">
+    <div className="w-[25%] flex flex-col gap-4 pl-4">
       <div
         className="rounded-xl overflow-hidden h-32 relative bg-black/40 border-1 border-[#f2e9c9]"
         style={{
