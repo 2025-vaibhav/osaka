@@ -6,37 +6,67 @@ const MiddleSection = ({ selectedCraft }) => {
   const { language } = useLanguage();
   const [craftData, setCraftData] = useState(null);
   const [heroImage, setHeroImage] = useState("");
+  const [slideImages, setSlideImages] = useState([]);
 
   useEffect(() => {
-    // Set hero image based on selected craft
+    // Set hero image and gallery images based on selected craft
+    let craftPath = "";
+    let imageCount = 0;
+
     switch (selectedCraft.toLowerCase()) {
       case "bidriware":
       case "ビドリ":
+        craftPath = "bidriware";
+        imageCount = 8;
         setHeroImage("/vinod-pics/bidriware/hero.png");
         break;
       case "zardozi":
       case "ザルドジ":
+        craftPath = "zardozi";
+        imageCount = 5;
         setHeroImage("/vinod-pics/zardozi/hero.png");
         break;
       case "charkha":
       case "チャルカ":
+        craftPath = "charkha";
+        imageCount = 6;
         setHeroImage("/vinod-pics/charkha/hero.png");
         break;
       case "loom weaving":
       case "織機織り":
+        craftPath = "loom-weaving";
+        imageCount = 6;
         setHeroImage("/vinod-pics/loom-weaving/hero.png");
         break;
       case "dyeing":
       case "染色":
+        craftPath = "dyeing";
+        imageCount = 6;
         setHeroImage("/vinod-pics/dyeing/hero.png");
         break;
       case "block printing":
       case "ブロック印刷":
+        craftPath = "block-printing";
+        imageCount = 5;
         setHeroImage("/vinod-pics/block-printing/hero.png");
         break;
       default:
         setHeroImage("");
+        setSlideImages([]);
+        return;
     }
+
+    // Generate the gallery image paths
+    const images = [];
+    for (let i = 1; i <= imageCount; i++) {
+      images.push(
+        `/vinod-pics/${craftPath}/gallery/${i}.${
+          i === imageCount ? "jpeg" : "png"
+        }`
+      );
+    }
+    setSlideImages(images);
+    setCurrentSlide(0); // Reset to first slide when craft changes
 
     fetch("/english-data.json")
       .then((res) => res.json())
@@ -49,11 +79,6 @@ const MiddleSection = ({ selectedCraft }) => {
   }, [selectedCraft]);
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  const slideImages = [
-    "https://media.istockphoto.com/id/1442179368/photo/maldives-island.jpg?s=612x612&w=0&k=20&c=t38FJQ6YhyyZGN91A8tpn3nz9Aqcy_aXolImsOXOZ34=",
-    "https://media.istockphoto.com/id/1550071750/photo/green-tea-tree-leaves-camellia-sinensis-in-organic-farm-sunlight-fresh-young-tender-bud.jpg?s=612x612&w=0&k=20&c=RC_xD5DY5qPH_hpqeOY1g1pM6bJgGJSssWYjVIvvoLw=",
-    "https://media.istockphoto.com/id/1403500817/photo/the-craggies-in-the-blue-ridge-mountains.jpg?s=612x612&w=0&k=20&c=N-pGA8OClRVDzRfj_9AqANnOaDS3devZWwrQNwZuDSk=",
-  ];
 
   const goToNextSlide = () => {
     setCurrentSlide((prev) => (prev === slideImages.length - 1 ? 0 : prev + 1));
@@ -118,46 +143,51 @@ const MiddleSection = ({ selectedCraft }) => {
           </h2>
         </div>
 
-        {/* Previous Button */}
-        <motion.button
-          onClick={goToPrevSlide}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="absolute left-6 bottom-5 rounded-full text-white text-5xl transition-all flex items-center justify-center z-30 p-3 cursor-pointer"
-        >
-          <i className="bi bi-arrow-left-circle"></i>
-        </motion.button>
+        {/* Navigation buttons only show if there are images */}
+        {slideImages.length > 0 && (
+          <>
+            {/* Previous Button */}
+            <motion.button
+              onClick={goToPrevSlide}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="absolute left-6 bottom-5 rounded-full text-white text-5xl transition-all flex items-center justify-center z-30 p-3 cursor-pointer"
+            >
+              <i className="bi bi-arrow-left-circle"></i>
+            </motion.button>
 
-        {/* Next Button */}
-        <motion.button
-          onClick={goToNextSlide}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="absolute right-6 bottom-5 rounded-full text-white text-5xl transition-all flex items-center justify-center z-30 p-3 cursor-pointer"
-        >
-          <i className="bi bi-arrow-right-circle"></i>
-        </motion.button>
+            {/* Next Button */}
+            <motion.button
+              onClick={goToNextSlide}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="absolute right-6 bottom-5 rounded-full text-white text-5xl transition-all flex items-center justify-center z-30 p-3 cursor-pointer"
+            >
+              <i className="bi bi-arrow-right-circle"></i>
+            </motion.button>
 
-        {/* Slide Indicators */}
-        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-3 z-30">
-          {slideImages.map((_, index) => (
-            <motion.div
-              key={index}
-              onClick={() => goToSlide(index)}
-              whileHover={{ scale: 1.2 }}
-              className={`w-3 h-3 rounded-full cursor-pointer ${
-                currentSlide === index ? "bg-white" : "bg-gray-400"
-              }`}
-              animate={{
-                scale: currentSlide === index ? 1.25 : 1,
-              }}
-              transition={{ type: "spring", stiffness: 500 }}
-              aria-label={`${
-                language === "english" ? "Go to photo" : "写真へ"
-              } ${index + 1}`}
-            ></motion.div>
-          ))}
-        </div>
+            {/* Slide Indicators */}
+            <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-3 z-30">
+              {slideImages.map((_, index) => (
+                <motion.div
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  whileHover={{ scale: 1.2 }}
+                  className={`w-3 h-3 rounded-full cursor-pointer ${
+                    currentSlide === index ? "bg-white" : "bg-gray-400"
+                  }`}
+                  animate={{
+                    scale: currentSlide === index ? 1.25 : 1,
+                  }}
+                  transition={{ type: "spring", stiffness: 500 }}
+                  aria-label={`${
+                    language === "english" ? "Go to photo" : "写真へ"
+                  } ${index + 1}`}
+                ></motion.div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
