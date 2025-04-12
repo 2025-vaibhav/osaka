@@ -10,28 +10,23 @@ const App = () => {
     AOS.init({});
   }, []);
 
-  const sectionClass = "h-[1026px] border border-white w-[1856px] relative rounded-[56px] overflow-hidden";
+  const sectionClass =
+    "h-[1026px] border border-white w-[1856px] relative rounded-[56px] overflow-hidden";
 
   return (
     <LanguageProvider>
       <Router>
         <div className="grid grid-cols-2 grid-rows-2 gap-8 p-8">
-          <Section 
-            sectionId="section1" 
-            className={`${sectionClass} rotate-180`} 
+          <Section
+            sectionId="section1"
+            className={`${sectionClass} rotate-180`}
           />
-          <Section 
-            sectionId="section2" 
-            className={`${sectionClass} rotate-180`} 
+          <Section
+            sectionId="section2"
+            className={`${sectionClass} rotate-180`}
           />
-          <Section 
-            sectionId="section3" 
-            className={sectionClass} 
-          />
-          <Section 
-            sectionId="section4" 
-            className={sectionClass} 
-          />
+          <Section sectionId="section3" className={sectionClass} />
+          <Section sectionId="section4" className={sectionClass} />
         </div>
       </Router>
     </LanguageProvider>
