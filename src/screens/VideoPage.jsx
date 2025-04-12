@@ -9,10 +9,15 @@ const VideoPage = () => {
   const { language } = useLanguage();
   const scrollContainerRef = useRef(null);
   const videoContainerRef = useRef(null);
+  const videoRef = useRef(null);
   const [content, setContent] = useState(null);
   const [videoWidth, setVideoWidth] = useState(500);
   const [scrollable, setScrollable] = useState(false);
-  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false); // New state
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const [showControls, setShowControls] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState(null);
 
   useEffect(() => {
     fetch("/videopage-data.json")
@@ -34,12 +39,11 @@ const VideoPage = () => {
 
       if (maxScroll <= 0) {
         console.log("Not enough content to scroll");
-        setIsScrolledToBottom(true); // If there's no scroll, consider it at bottom
+        setIsScrolledToBottom(true);
         return;
       }
 
-      // Check if scrolled to bottom (with a small threshold)
-      const atBottom = scrollTop >= maxScroll - 10; // 10px threshold
+      const atBottom = scrollTop >= maxScroll - 10;
       setIsScrolledToBottom(atBottom);
 
       const scrollPercentage = Math.min(scrollTop / maxScroll, 1);
@@ -48,7 +52,7 @@ const VideoPage = () => {
     };
 
     scrollContainer.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    handleScroll();
 
     return () => {
       scrollContainer.removeEventListener("scroll", handleScroll);
@@ -61,12 +65,56 @@ const VideoPage = () => {
       const isCurrentlyScrollable =
         container.scrollHeight > container.clientHeight;
       setScrollable(isCurrentlyScrollable);
-      // If content isn't scrollable, consider it at bottom
       if (!isCurrentlyScrollable) {
         setIsScrolledToBottom(true);
       }
     }
   }, [content]);
+
+  const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (!videoContainerRef.current) return;
+
+    if (!document.fullscreenElement) {
+      videoContainerRef.current.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  const handleMouseEnter = () => {
+    setShowControls(true);
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      setHoverTimeout(null);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    const timeout = setTimeout(() => {
+      setShowControls(false);
+    }, 2000);
+    setHoverTimeout(timeout);
+  };
 
   if (!content)
     return (
@@ -109,21 +157,24 @@ const VideoPage = () => {
         <hr className="mb-5 w-[320px] mx-auto" />
 
         {/* Video - Dynamic width based on scroll */}
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-4 relative">
           <div
             ref={videoContainerRef}
-            className="bg-black border border-gray-400"
+            className="bg-black border border-gray-400 relative"
             style={{
               width: `${videoWidth}px`,
               height: `${videoHeight}px`,
               transition: "width 0.1s ease-out, height 0.1s ease-out",
               boxSizing: "border-box",
             }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             <video
+              ref={videoRef}
               autoPlay
               loop
-              muted
+              muted={isMuted}
               playsInline
               disablePictureInPicture
               className="w-full h-full object-cover"
@@ -131,6 +182,44 @@ const VideoPage = () => {
               <source src="/V.mp4" type="video/mp4" />
               {content[language].videoFallbackText}
             </video>
+
+            {/* Video Controls */}
+            {(showControls || !isPlaying) && (
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 flex justify-between items-center">
+                <button
+                  onClick={togglePlayPause}
+                  className="text-white hover:text-gray-300 focus:outline-none"
+                  aria-label={isPlaying ? "Pause" : "Play"}
+                >
+                  {isPlaying ? (
+                    <i className="bi bi-pause-fill text-xl"></i>
+                  ) : (
+                    <i className="bi bi-play-fill text-xl"></i>
+                  )}
+                </button>
+
+                <div className="flex space-x-3">
+                  <button
+                    onClick={toggleMute}
+                    className="text-white hover:text-gray-300 focus:outline-none"
+                    aria-label={isMuted ? "Unmute" : "Mute"}
+                  >
+                    {isMuted ? (
+                      <i className="bi bi-volume-mute-fill text-xl"></i>
+                    ) : (
+                      <i className="bi bi-volume-up-fill text-xl"></i>
+                    )}
+                  </button>
+                  <button
+                    onClick={toggleFullscreen}
+                    className="text-white hover:text-gray-300 focus:outline-none"
+                    aria-label="Fullscreen"
+                  >
+                    <i className="bi bi-fullscreen text-xl"></i>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -154,7 +243,7 @@ const VideoPage = () => {
         <div className="flex justify-center pt-4">
           <button
             onClick={() => navigate("/select-craft")}
-            disabled={!isScrolledToBottom} // Disable based on scroll state
+            disabled={!isScrolledToBottom}
             className={`h-[36px] w-[122px] text-[10px] border rounded-full transition ${
               isScrolledToBottom
                 ? "border-white text-white hover:bg-white hover:text-black"
