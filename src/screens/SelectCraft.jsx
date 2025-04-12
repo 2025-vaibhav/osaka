@@ -163,11 +163,6 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
         {crafts[language].title}
       </h2>
 
-      <img
-        src="black.png"
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-150"
-      />
-
       <button
         onClick={() => onNavigate("video-page")}
         className="md:px-8 px-2 md:py-3 py-2 absolute md:top-10 top-12 md:left-10 left-6 bg-black/50 md:w-28 w-20 md:text-base text-[12px] border border-white rounded-full text-white hover:bg-white hover:text-black transition"
