@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../LanguageContext";
 
 const VideoPage = ({ onNavigate, sectionId }) => {
   const { language } = useLanguage(sectionId);
   const scrollContainerRef = useRef(null);
   const videoContainerRef = useRef(null);
+  const contentContainerRef = useRef(null);
   const [content, setContent] = useState(null);
-  const [videoWidth, setVideoWidth] = useState(500);
+  const [videoWidth, setVideoWidth] = useState(0);
+  const [initialVideoWidth, setInitialVideoWidth] = useState(0);
   const [scrollable, setScrollable] = useState(false);
 
   useEffect(() => {
@@ -19,9 +21,32 @@ const VideoPage = ({ onNavigate, sectionId }) => {
       .catch((err) => console.error("Error loading content:", err));
   }, []);
 
+  // Calculate initial video width to match content width (70% of container)
+  useEffect(() => {
+    const calculateInitialWidth = () => {
+      if (contentContainerRef.current) {
+        // Get the actual width of the content container
+        const contentWidth = contentContainerRef.current.offsetWidth;
+        const newWidth = contentWidth;
+        setInitialVideoWidth(newWidth);
+        setVideoWidth(newWidth);
+        console.log("Initial video width set to:", newWidth);
+      }
+    };
+
+    if (content) {
+      // Wait for content to render before measuring
+      setTimeout(calculateInitialWidth, 0);
+    }
+
+    // Recalculate on window resize
+    window.addEventListener("resize", calculateInitialWidth);
+    return () => window.removeEventListener("resize", calculateInitialWidth);
+  }, [content]);
+
   useEffect(() => {
     // Only set up scroll listener after content is loaded
-    if (!content || !scrollContainerRef.current) return;
+    if (!content || !scrollContainerRef.current || !initialVideoWidth) return;
 
     const scrollContainer = scrollContainerRef.current;
 
@@ -39,10 +64,11 @@ const VideoPage = ({ onNavigate, sectionId }) => {
       }
 
       const scrollPercentage = Math.min(scrollTop / maxScroll, 1);
-      console.log("Scroll percentage:", scrollPercentage);
 
-      // Calculate new width based on scroll percentage (500px at top, 400px at bottom)
-      const newWidth = 500 - scrollPercentage * 100;
+      // Calculate new width based on scroll percentage
+      // Start at initialVideoWidth and shrink by 20% when fully scrolled
+      const newWidth =
+        initialVideoWidth - scrollPercentage * initialVideoWidth * 0.2;
 
       // Update video width
       setVideoWidth(newWidth);
@@ -60,7 +86,7 @@ const VideoPage = ({ onNavigate, sectionId }) => {
       scrollContainer.removeEventListener("scroll", handleScroll);
       console.log("Scroll listener removed");
     };
-  }, [content]);
+  }, [content, initialVideoWidth]);
 
   useEffect(() => {
     if (content && scrollContainerRef.current) {
@@ -91,7 +117,7 @@ const VideoPage = ({ onNavigate, sectionId }) => {
       <div className="gradient-box w-[85vw] h-full rounded-4xl p-8 relative shadow-lg flex flex-col">
         {/* Back Button */}
         <button
-          onClick={() => onNavigate('home')}
+          onClick={() => onNavigate("home")}
           className="px-8 py-3 w-28 absolute top-8 left-8 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
         >
           {language === "english" ? "Back" : "戻る"}
@@ -147,7 +173,10 @@ const VideoPage = ({ onNavigate, sectionId }) => {
           className="overflow-y-auto V-Scroll pr-2 flex-1 text-justify"
           style={{ minHeight: "100px", maxHeight: "calc(100% - 200px)" }}
         >
-          <div className="max-w-full-md text-gray-100 mx-auto">
+          <div
+            ref={contentContainerRef}
+            className="w-[70%] text-gray-100 mx-auto"
+          >
             {/* Text Content */}
             {content[language].paragraphs.map((paragraph, index) => (
               <p key={index} className="mb-4">
@@ -171,7 +200,7 @@ const VideoPage = ({ onNavigate, sectionId }) => {
         {/* Next Button - Fixed position */}
         <div className="flex justify-center mt-4">
           <button
-            onClick={() => onNavigate('select-craft')}
+            onClick={() => onNavigate("select-craft")}
             className="px-8 py-3 w-28 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
           >
             {language === "english" ? "Next" : "次へ"}
