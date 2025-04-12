@@ -14,11 +14,13 @@ const Home = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-transparent px-4 relative overflow-hidden">
       {/* Content */}
-      <div className="gradient-box cut-card text-white shadow-lg text-center space-y-8 max-w-[600px] w-full border-gray-700 relative z-10">
-        <h1 className="text-[32px] font-serif text-[#f2e9c9]">
+      <div className="gradient-box cut-card text-white shadow-lg text-center space-y-8  border-gray-700 relative z-10 w-[502px] h-[240px]">
+        <h1 className="text-[32px] font-serif text-[#D4D090]">
           Threaded Frequencies
         </h1>
-        <p className="text-[11.4px] relative mt-5">Choose Your preferred Language</p>
+        <p className="text-[11.4px] relative mt-5">
+          Choose Your preferred Language
+        </p>
         <div className="flex justify-center gap-6">
           <button
             onClick={() => handleLanguageSelect("english")}

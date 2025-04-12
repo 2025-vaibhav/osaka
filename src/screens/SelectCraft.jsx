@@ -114,16 +114,11 @@ const SelectCraft = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="relative min-h-screen bg-transparent text-[#f2e9c9] flex flex-col items-center justify-center px-4 py-8 overflow-hidden"
+      className="relative min-h-screen bg-transparent text-[#D4D090] flex flex-col items-center justify-center px-4 py-8 overflow-hidden"
     >
       <h2 className="text-[32px] absolute top-[30px] font-serif mb-14 text-center z-10">
         {crafts[language].title}
       </h2>
-
-      <img
-        src="black.png"
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-150"
-      />
 
       <button
         onClick={() => navigate("/video-page")}

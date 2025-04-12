@@ -3,12 +3,10 @@
 }
 
 .cut-card {
-  /* background-image: url("green.png"); */
+  background-image: url("green.png");
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
-  width: 502px;
-  height: 240px;
 }
 
 /* small card */
