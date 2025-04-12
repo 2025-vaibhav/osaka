@@ -59,11 +59,7 @@ const MiddleSection = ({ selectedCraft, sectionId }) => {
     // Generate the gallery image paths
     const images = [];
     for (let i = 1; i <= imageCount; i++) {
-      images.push(
-        `/vinod-pics/${craftPath}/gallery/${i}.${
-          i === imageCount ? "jpeg" : "png"
-        }`
-      );
+      images.push(`/vinod-pics/${craftPath}/gallery/${i}.png`);
     }
     setSlideImages(images);
     setCurrentSlide(0); // Reset to first slide when craft changes
