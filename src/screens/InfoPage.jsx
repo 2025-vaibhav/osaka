@@ -6,12 +6,14 @@ import RightSection from "../columns/RightSection";
 import { useLanguage } from "../LanguageContext";
 
 // Import your images (adjust paths as needed)
+import charkhaIcon from "/craft/1.png";
 import bidriwareIcon from "/craft/3.png";
 import zardoziIcon from "/craft/4.png";
-import dyeingIcon from "/craft/5.png";
-import charkhaIcon from "/craft/1.png";
+import {
+  default as blockPrintingIcon,
+  default as dyeingIcon,
+} from "/craft/5.png";
 import loomWeavingIcon from "/craft/6.png";
-import blockPrintingIcon from "/craft/5.png";
 
 export default function InfoPage({ onNavigate, sectionId }) {
   const [searchParams] = useSearchParams();
@@ -113,7 +115,7 @@ export default function InfoPage({ onNavigate, sectionId }) {
   // Handle craft selection with URL parameter update
   const handleCraftSelect = (craft) => {
     setSelectedCraft(craft);
-    onNavigate('info-page', { selectedCraft: craft });
+    onNavigate("info-page", { selectedCraft: craft });
   };
 
   return (
@@ -132,7 +134,7 @@ export default function InfoPage({ onNavigate, sectionId }) {
           <div className="w-32 flex justify-center">
             <button
               className="flex items-center z-10 text-white gap-2"
-              onClick={() => onNavigate('home')}
+              onClick={() => onNavigate("home")}
             >
               <i className="bi bi-house text-4xl"></i>
               <span className="text-lg whitespace-nowrap">
@@ -176,7 +178,9 @@ export default function InfoPage({ onNavigate, sectionId }) {
           </div>
 
           {/* Language Toggle - Switch Style */}
-          <div className="w-32 flex justify-center">
+          <div className="w-24 flex justify-center">
+            {" "}
+            {/* Reduced width from w-32 to w-24 */}
             <label className="relative flex items-center cursor-pointer select-none">
               <input
                 type="checkbox"
@@ -188,14 +192,18 @@ export default function InfoPage({ onNavigate, sectionId }) {
                 }
                 className="sr-only"
               />
-              <div className="w-24 h-10 flex items-center justify-between rounded-full px-3 bg-[#BF9886] transition-colors duration-300">
+              <div className="w-20 h-10 flex items-center justify-between rounded-full px-2 bg-[#BF9886] transition-colors duration-300">
+                {" "}
+                {/* Reduced width from w-24 to w-20 and px-3 to px-2 */}
                 <span className="text-xs font-bold text-white">EN</span>
                 <span className="text-xs font-bold text-white">JPN</span>
               </div>
 
               <div
                 className={`absolute top-0 left-0 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center text-xs font-bold text-black transition-transform duration-300 ${
-                  language === "japanese" ? "translate-x-14" : "translate-x-0"
+                  language === "japanese"
+                    ? "translate-x-10"
+                    : "translate-x-0" /* Changed translate-x-14 to translate-x-10 */
                 }`}
               >
                 {language === "english" ? "EN" : "JPN"}
