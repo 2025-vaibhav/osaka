@@ -117,7 +117,7 @@ export default function InfoPage({ onNavigate, sectionId }) {
   };
 
   return (
-    <div className="w-full h-full gradient-box py-6 px-10 flex flex-col overflow-hidden">
+    <div className="w-full h-full gradient-box p-10 flex flex-col overflow-hidden">
       {/* Main Content Area */}
       <div className="flex flex-grow overflow-hidden mb-4">
         <LeftSection selectedCraft={craftMapping[language][selectedCraft]} />
@@ -143,7 +143,7 @@ export default function InfoPage({ onNavigate, sectionId }) {
 
           {/* Craft Icons - Fixed width items */}
           <div className="flex-1 flex justify-center">
-            <div className="flex gap-6 max-w-4xl mx-auto">
+            <div className="flex gap-20 max-w-4xl mx-auto">
               {crafts[language].map((craft, index) => {
                 const isActive = selectedCraft === craft.name;
                 return (
@@ -154,7 +154,7 @@ export default function InfoPage({ onNavigate, sectionId }) {
                     style={{ minWidth: "90px" }}
                   >
                     <div
-                      className={`aspect-square h-20 rounded-full transition-all duration-300 ease-in-out ${
+                      className={`aspect-square h-28 rounded-full transition-all duration-300 ease-in-out ${
                         isActive
                           ? "border-2 border-yellow-200 shadow-[0_0_10px_2px_#D3CF9A]"
                           : "border border-transparent opacity-70"
@@ -188,13 +188,11 @@ export default function InfoPage({ onNavigate, sectionId }) {
                 }
                 className="sr-only"
               />
-              {/* Track */}
               <div className="w-24 h-10 flex items-center justify-between rounded-full px-3 bg-[#BF9886] transition-colors duration-300">
                 <span className="text-xs font-bold text-white">EN</span>
                 <span className="text-xs font-bold text-white">JPN</span>
               </div>
 
-              {/* Toggle */}
               <div
                 className={`absolute top-0 left-0 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center text-xs font-bold text-black transition-transform duration-300 ${
                   language === "japanese" ? "translate-x-14" : "translate-x-0"

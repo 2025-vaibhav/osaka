@@ -93,7 +93,7 @@ const MiddleSection = ({ selectedCraft }) => {
   };
 
   return (
-    <div className="w-[45%] flex flex-col gap-4">
+    <div className="w-[50%] flex flex-col gap-4">
       {/* Title Section with Hero Image */}
       <div
         className="rounded-xl overflow-hidden h-32 relative bg-black/40 border-1 border-[#f2e9c9]"
