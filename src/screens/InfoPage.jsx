@@ -197,7 +197,6 @@ export default function InfoPage({ onNavigate, sectionId }) {
 
           {/* Language Toggle - Switch Style */}
           <div className="w-24 flex justify-center">
-            {" "}
             {/* Reduced width from w-32 to w-24 */}
             <label className="relative flex items-center cursor-pointer select-none">
               <input
@@ -211,7 +210,6 @@ export default function InfoPage({ onNavigate, sectionId }) {
                 className="sr-only"
               />
               <div className="w-20 h-10 flex items-center justify-between rounded-full px-2 bg-[#BF9886] transition-colors duration-300">
-                {" "}
                 {/* Reduced width from w-24 to w-20 and px-3 to px-2 */}
                 <span className="text-xs font-bold text-white">EN</span>
                 <span className="text-xs font-bold text-white">JPN</span>
