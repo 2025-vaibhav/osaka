@@ -145,10 +145,6 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     }
   }, [selectedCraft, language, originalCraftName]);
 
-  const handleButtonClick = (index) => {
-    setActiveText(activeText === index ? null : index);
-  };
-
   return (
     <div className="w-[25%] flex flex-col gap-4 pl-4">
       <div
@@ -222,12 +218,11 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                 }}
               >
                 <button
-                  className={`bg-red-500 h-3 w-3 rounded-full hover:bg-red-400 transition-colors ${
+                  className={`bg-red-500 h-3 w-3 rounded-full ${
                     activeText === index
-                      ? "ring-2 ring-white relative heartbeat"
+                      ? "ring-2 ring-white relative heartbeat "
                       : ""
                   }`}
-                  onClick={() => handleButtonClick(index)}
                 />
               </div>
 
