@@ -33,12 +33,12 @@ const RightSection = ({ selectedCraft, sectionId }) => {
   const textBoxIds = ["text1", "text2", "text3", "text4", "text5", "text6"];
 
   const buttonPositions = [
-    { top: 397, left: 86 }, // Button 1
-    { top: 488, right: 203 }, // Button 2
-    { top: 450, right: 110 }, // Button 3
-    { top: 318, right: 72 }, // Button 4
-    { top: 455, left: 345 }, // Button 5
-    { top: 465, right: 43 }, // Button 6
+    { top: 397, left: 86 },
+    { top: 488, right: 203 },
+    { top: 450, right: 110 },
+    { top: 318, right: 72 },
+    { top: 455, left: 345 },
+    { top: 465, right: 43 },
   ];
 
   useEffect(() => {
