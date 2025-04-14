@@ -1,9 +1,11 @@
+"use client";
+
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import Xarrow from "react-xarrows";
 import { useLanguage } from "../LanguageContext";
 
-const RightSection = ({ selectedCraft, sectionId }) => {
+const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
   const { language } = useLanguage(sectionId);
   const [craftData, setCraftData] = useState(null);
   const [toolsText, setToolsText] = useState("");
@@ -27,6 +29,15 @@ const RightSection = ({ selectedCraft, sectionId }) => {
       "チャルカは、車輪が回転するたびに、柔らかく、持続的な音を発します。様々な音の中には、木製の部品から発せられる穏やかなカチッという音や、きしむ音、そして指の間で繊維が糸に絡み合うかすかな音などがあります。",
       "ザルドジ細工は、針が張られた布地を刺すときに、柔らかな「チクチク」という音を生み出します。金属糸やスパンコールが擦れ合うと、かすかな「チリンチク」という音が聞こえ、音量は変化します。そして、織物に装飾を施す様々な工程で、時折、布地が擦れる音も聞こえます。",
     ],
+  };
+
+  const craftToButtonIndex = {
+    bidri: 1,
+    zardozi: 5,
+    charkha: 4,
+    "loom weaving": 0,
+    dyeing: 3,
+    "block printing": 2,
   };
 
   const buttonIds = ["btn1", "btn2", "btn3", "btn4", "btn5", "btn6"];
@@ -101,7 +112,38 @@ const RightSection = ({ selectedCraft, sectionId }) => {
             : "道具情報の読み込みに失敗しました。"
         );
       });
-  }, [selectedCraft, language]);
+
+    // Automatically select the corresponding dot for the selected craft
+    if (selectedCraft) {
+      // Try to match by selectedCraft first
+      let buttonIndex = craftToButtonIndex[selectedCraft.toLowerCase()];
+
+      // If not found and we have originalCraftName, try to match by that
+      if (buttonIndex === undefined && originalCraftName) {
+        // Map original craft names to their corresponding button indices
+        const originalCraftMapping = {
+          Bidriware: 1,
+          ビドリ: 1,
+          Zardozi: 5,
+          ザルドジ: 5,
+          Charkha: 4,
+          チャルカ: 4,
+          "Loom Weaving": 0,
+          織機織り: 0,
+          Dyeing: 3,
+          染色: 3,
+          "Block Printing": 2,
+          ブロック印刷: 2,
+        };
+
+        buttonIndex = originalCraftMapping[originalCraftName];
+      }
+
+      if (buttonIndex !== undefined) {
+        setActiveText(buttonIndex);
+      }
+    }
+  }, [selectedCraft, language, originalCraftName]);
 
   const handleButtonClick = (index) => {
     setActiveText(activeText === index ? null : index);
