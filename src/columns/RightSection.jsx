@@ -223,7 +223,9 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
               >
                 <button
                   className={`bg-red-500 h-3 w-3 rounded-full hover:bg-red-400 transition-colors ${
-                    activeText === index ? "ring-2 ring-white" : ""
+                    activeText === index
+                      ? "ring-2 ring-white relative heartbeat"
+                      : ""
                   }`}
                   onClick={() => handleButtonClick(index)}
                 />
