@@ -9,9 +9,10 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
   const { language } = useLanguage(sectionId);
   const [craftData, setCraftData] = useState(null);
   const [toolsText, setToolsText] = useState("");
-  const [activeText, setActiveText] = useState(null);
+  // Initialize with a default value (0 for Loom Weaving)
+  const [activeText, setActiveText] = useState(0);
   const [backgroundImage, setBackgroundImage] = useState("");
-  const [buttonTexts, setButtonTexts] = useState({ english: [], japanese: [] }); 
+  const [buttonTexts, setButtonTexts] = useState({ english: [], japanese: [] });
 
   const craftToButtonIndex = {
     bidri: 1,
@@ -47,8 +48,55 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
         setButtonTexts({ english: [], japanese: [] });
       });
 
-    // Set background image based on selected craft
-    switch (selectedCraft.toLowerCase()) {
+    // Set initial background image
+    const defaultCraft = "loom weaving";
+    const initialCraft = selectedCraft
+      ? selectedCraft.toLowerCase()
+      : defaultCraft;
+
+    // Set background image based on selected craft or default craft
+    updateBackgroundImage(initialCraft);
+
+    fetch("/english-data.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setCraftData(data);
+        updateToolsText(data, initialCraft);
+      })
+      .catch((err) => {
+        console.error("Error loading JSON:", err);
+        setToolsText(
+          language === "english"
+            ? "Failed to load tools information."
+            : "道具情報の読み込みに失敗しました。"
+        );
+      });
+
+    // Initialize with the correct button for the selected craft or default
+    initializeActiveButton(initialCraft, originalCraftName);
+  }, []);
+
+  // This effect runs when selectedCraft or language changes
+  useEffect(() => {
+    if (!selectedCraft) return;
+
+    const craftName = selectedCraft.toLowerCase();
+
+    // Update background image
+    updateBackgroundImage(craftName);
+
+    // Update tools text if data is available
+    if (craftData) {
+      updateToolsText(craftData, craftName);
+    }
+
+    // Update active button
+    initializeActiveButton(craftName, originalCraftName);
+  }, [selectedCraft, language, originalCraftName]);
+
+  // Helper function to update background image
+  const updateBackgroundImage = (craftName) => {
+    switch (craftName) {
       case "bidri":
         setBackgroundImage("/vinod-pics/bidriware/tools.png");
         break;
@@ -68,84 +116,74 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
         setBackgroundImage("/vinod-pics/block-printing/tools.png");
         break;
       default:
-        setBackgroundImage("");
+        setBackgroundImage("/vinod-pics/loom-weaving/tools.png"); // Default image
+    }
+  };
+
+  // Helper function to update tools text
+  const updateToolsText = (data, craftName) => {
+    const craft = data.crafts.find(
+      (craft) =>
+        craft.name.English.toLowerCase() === craftName ||
+        craft.name.English.toLowerCase() === craftName.replace(" ", "_")
+    );
+
+    if (craft && craft.tools_text) {
+      setToolsText(
+        language === "english"
+          ? craft.tools_text.English
+          : craft.tools_text.Japanese || craft.tools_text.English
+      );
+    } else {
+      setToolsText(
+        language === "english"
+          ? "No tools information available for this craft."
+          : "この工芸に関する道具の情報はありません。"
+      );
+    }
+  };
+
+  // Helper function to initialize active button
+  const initializeActiveButton = (craftName, originalName) => {
+    // Try to match by craftName first
+    let buttonIndex = craftToButtonIndex[craftName];
+
+    // If not found and we have originalName, try to match by that
+    if (buttonIndex === undefined && originalName) {
+      // Map original craft names to their corresponding button indices
+      const originalCraftMapping = {
+        Bidriware: 1,
+        ビドリ: 1,
+        Zardozi: 5,
+        ザルドジ: 5,
+        Charkha: 4,
+        チャルカ: 4,
+        "Loom Weaving": 0,
+        織機織り: 0,
+        Dyeing: 3,
+        染色: 3,
+        "Block Printing": 2,
+        ブロック印刷: 2,
+      };
+
+      buttonIndex = originalCraftMapping[originalName];
     }
 
-    fetch("/english-data.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setCraftData(data);
-        if (selectedCraft) {
-          const craft = data.crafts.find(
-            (craft) =>
-              craft.name.English.toLowerCase() ===
-                selectedCraft.toLowerCase() ||
-              craft.name.English.toLowerCase() ===
-                selectedCraft.replace(" ", "_").toLowerCase()
-          );
-          if (craft && craft.tools_text) {
-            setToolsText(
-              language === "english"
-                ? craft.tools_text.English
-                : craft.tools_text.Japanese || craft.tools_text.English
-            );
-          } else {
-            setToolsText(
-              language === "english"
-                ? "No tools information available for this craft."
-                : "この工芸に関する道具の情報はありません。"
-            );
-          }
-        }
-      })
-      .catch((err) => {
-        console.error("Error loading JSON:", err);
-        setToolsText(
-          language === "english"
-            ? "Failed to load tools information."
-            : "道具情報の読み込みに失敗しました。"
-        );
-      });
-
-    // Automatically select the corresponding dot for the selected craft
-    if (selectedCraft) {
-      // Try to match by selectedCraft first
-      let buttonIndex = craftToButtonIndex[selectedCraft.toLowerCase()];
-
-      // If not found and we have originalCraftName, try to match by that
-      if (buttonIndex === undefined && originalCraftName) {
-        // Map original craft names to their corresponding button indices
-        const originalCraftMapping = {
-          Bidriware: 1,
-          ビドリ: 1,
-          Zardozi: 5,
-          ザルドジ: 5,
-          Charkha: 4,
-          チャルカ: 4,
-          "Loom Weaving": 0,
-          織機織り: 0,
-          Dyeing: 3,
-          染色: 3,
-          "Block Printing": 2,
-          ブロック印刷: 2,
-        };
-
-        buttonIndex = originalCraftMapping[originalCraftName];
-      }
-
-      if (buttonIndex !== undefined) {
-        setActiveText(buttonIndex);
-      }
+    // If still undefined, default to 0 (Loom Weaving)
+    if (buttonIndex === undefined) {
+      buttonIndex = 0;
     }
-  }, [selectedCraft, language, originalCraftName]);
+
+    setActiveText(buttonIndex);
+  };
 
   const buttonOffsets = {
     0: -120, // loom
     1: 0, // bidiri
     2: 97, // block
     3: 135, // dying
-    4: 137,  // chakra
-    5: 162,  // zardozi
+    4: 137, // chakra
+    5: 162, // zardozi
   };
 
   return (
@@ -221,7 +259,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                 }}
               >
                 <button
-                  // onClick={() => setActiveText(index)}
+                  onClick={() => setActiveText(index)}
                   className={`bg-red-500 h-3 w-3 rounded-full ${
                     activeText === index
                       ? "ring-2 ring-white relative heartbeat "
