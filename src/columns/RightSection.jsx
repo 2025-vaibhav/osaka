@@ -334,7 +334,6 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                       ? "ring-2 ring-white relative heartbeat"
                       : ""
                   }`}
-                  onClick={() => handleButtonClick(index)}
                 />
               </div>
 
