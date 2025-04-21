@@ -1,0 +1,14 @@
+To Create a Link Folder:
+  (i)  Open CMD as Administrator.
+
+Run the following command:
+  (ii)  make a new folder on Desktop `Threaded Frequencies`
+  (iii) After creating folder open `CMD` run as `Administrator` mode
+  (iv)  mklink /D "C:\Users\%USERNAME%\Desktop\Threaded Frequencies\public" "C:\Users\%USERNAME%\Downloads\Threaded_Frequencies_Main\public"
+
+To Start the Server:
+
+    (v) Navigate to the Threaded Frequencies folder located on the Desktop (not inside the public folder).
+    (vi) Double-click on the `start` file.
+        Wait a few moments — your web application will start automatically.
+

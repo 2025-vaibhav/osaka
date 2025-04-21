@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLanguage } from "../LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 
-const MiddleSection = ({ selectedCraft }) => {
-  const { language } = useLanguage();
+const MiddleSection = ({ selectedCraft, sectionId }) => {
+  const { language } = useLanguage(sectionId);
   const [craftData, setCraftData] = useState(null);
   const [heroImage, setHeroImage] = useState("");
   const [slideImages, setSlideImages] = useState([]);
@@ -18,37 +18,37 @@ const MiddleSection = ({ selectedCraft }) => {
       case "ビドリ":
         craftPath = "bidriware";
         imageCount = 8;
-        setHeroImage("/vinod-pics/bidriware/hero.png");
+        setHeroImage("/craft-pics/bidriware/hero.png");
         break;
       case "zardozi":
       case "ザルドジ":
         craftPath = "zardozi";
         imageCount = 5;
-        setHeroImage("/vinod-pics/zardozi/hero.png");
+        setHeroImage("/craft-pics/zardozi/hero.png");
         break;
       case "charkha":
       case "チャルカ":
         craftPath = "charkha";
         imageCount = 6;
-        setHeroImage("/vinod-pics/charkha/hero.png");
+        setHeroImage("/craft-pics/charkha/hero.png");
         break;
       case "loom weaving":
       case "織機織り":
         craftPath = "loom-weaving";
         imageCount = 6;
-        setHeroImage("/vinod-pics/loom-weaving/hero.png");
+        setHeroImage("/craft-pics/loom-weaving/hero.png");
         break;
       case "dyeing":
       case "染色":
         craftPath = "dyeing";
         imageCount = 6;
-        setHeroImage("/vinod-pics/dyeing/hero.png");
+        setHeroImage("/craft-pics/dyeing/hero.png");
         break;
       case "block printing":
       case "ブロック印刷":
         craftPath = "block-printing";
         imageCount = 5;
-        setHeroImage("/vinod-pics/block-printing/hero.png");
+        setHeroImage("/craft-pics/block-printing/hero.png");
         break;
       default:
         setHeroImage("");
@@ -59,16 +59,12 @@ const MiddleSection = ({ selectedCraft }) => {
     // Generate the gallery image paths
     const images = [];
     for (let i = 1; i <= imageCount; i++) {
-      images.push(
-        `/vinod-pics/${craftPath}/gallery/${i}.${
-          i === imageCount ? "jpeg" : "png"
-        }`
-      );
+      images.push(`/craft-pics/${craftPath}/gallery/${i}.png`);
     }
     setSlideImages(images);
     setCurrentSlide(0); // Reset to first slide when craft changes
 
-    fetch("/english-data.json")
+    fetch("/language-data.json")
       .then((res) => res.json())
       .then((data) => {
         setCraftData(data);
@@ -93,7 +89,7 @@ const MiddleSection = ({ selectedCraft }) => {
   };
 
   return (
-    <div className="w-[45%] flex flex-col gap-4">
+    <div className="w-[50%] flex flex-col gap-4">
       {/* Title Section with Hero Image */}
       <div
         className="rounded-xl overflow-hidden h-32 relative bg-black/40 border-1 border-[#f2e9c9]"

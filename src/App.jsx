@@ -1,33 +1,35 @@
 import AOS from "aos";
 import "aos/dist/aos.css";
 import React, { useEffect } from "react";
-
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import VideoLoopBG from "./components/VideoLoopBG";
-import Demo from "./screens/Demo";
-import Home from "./screens/Home";
-import InfoPage from "./screens/InfoPage";
-import SelectCraft from "./screens/SelectCraft";
-import VideoPage from "./screens/VideoPage";
+import { BrowserRouter as Router } from "react-router-dom";
+import Section from "./components/Section";
+import { LanguageProvider } from "./LanguageContext";
 
 const App = () => {
   useEffect(() => {
     AOS.init({});
   }, []);
 
-  return (
-    <Router>
-      <VideoLoopBG />
+  const sectionClass =
+    "h-[1026px] border border-zinc-700 w-[1856px] z-10 relative rounded-[56px] overflow-hidden";
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/video-page" element={<VideoPage />} />
-        <Route path="/select-craft" element={<SelectCraft />} />
-        <Route path="/info-page" element={<InfoPage />} />
-        <Route path="/demo" element={<Demo />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
-    </Router>
+  return (
+    <LanguageProvider>
+      <Router>
+        <div className="grid grid-cols-2 grid-rows-2 gap-11 p-8 bg-[#0a0a0a]">
+          <Section
+            sectionId="section1"
+            className={`${sectionClass} rotate-180`}
+          />
+          <Section
+            sectionId="section2"
+            className={`${sectionClass} rotate-180`}
+          />
+          <Section sectionId="section3" className={sectionClass} />
+          <Section sectionId="section4" className={sectionClass} />
+        </div>
+      </Router>
+    </LanguageProvider>
   );
 };
 
