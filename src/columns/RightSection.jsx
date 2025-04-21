@@ -11,7 +11,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
   const [toolsText, setToolsText] = useState("");
   const [activeText, setActiveText] = useState(null);
   const [backgroundImage, setBackgroundImage] = useState("");
-  const [buttonTexts, setButtonTexts] = useState({ english: [], japanese: [] }); // Initialize with empty arrays
+  const [buttonTexts, setButtonTexts] = useState({ english: [], japanese: [] }); 
 
   const craftToButtonIndex = {
     bidri: 1,
@@ -139,6 +139,15 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     }
   }, [selectedCraft, language, originalCraftName]);
 
+  const buttonOffsets = {
+    0: -120, // loom
+    1: 0, // bidiri
+    2: 97, // block
+    3: 135, // dying
+    4: 137,  // chakra
+    5: 162,  // zardozi
+  };
+
   return (
     <div className="w-[25%] flex flex-col gap-4 pl-4">
       <div
@@ -212,7 +221,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                 }}
               >
                 <button
-                  onClick={() => setActiveText(index)}
+                  // onClick={() => setActiveText(index)}
                   className={`bg-red-500 h-3 w-3 rounded-full ${
                     activeText === index
                       ? "ring-2 ring-white relative heartbeat "
@@ -227,12 +236,15 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                   start={buttonIds[index]}
                   end={textBoxIds[index]}
                   startAnchor="middle"
-                  endAnchor="bottom"
+                  endAnchor={{
+                    position: "bottom",
+                    offset: { x: buttonOffsets[index] },
+                  }}
                   color="#f2e9c9"
                   strokeWidth={1}
                   path="straight"
                   curveness={0}
-                  headSize={10}
+                  headSize={0}
                   zIndex={10}
                 />
               )}
