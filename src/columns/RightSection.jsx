@@ -171,7 +171,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
         </div>
       </div>
 
-      {/* Explore Frequencies - Simplified without animations */}
+      {/* Explore Frequencies */}
       <div className="rounded-xl overflow-hidden flex-grow relative border-1 bg-black border-[#f2e9c9] circuit-board">
         <div className="absolute top-0 left-0 p-4 z-20 w-full">
           <h2 className="text-2xl font-serif italic text-center text-white mb-4">
@@ -230,8 +230,8 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                   endAnchor="bottom"
                   color="#f2e9c9"
                   strokeWidth={1}
-                  path="smooth"
-                  curveness={0.4}
+                  path="straight"
+                  curveness={0}
                   headSize={10}
                   zIndex={10}
                 />
