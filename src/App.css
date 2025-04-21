@@ -6,12 +6,19 @@ body{
 }
 
 .cut-card {
-  background-image: url("green.png");
+  background-image: url("ii.png");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
+/* small card */
+.small-card {
+  background-image: url("ii.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 /* video in background */
 
 .loop {

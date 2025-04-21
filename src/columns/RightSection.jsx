@@ -53,6 +53,18 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
   ];
 
   useEffect(() => {
+    // Load button texts from JSON file
+    fetch("/buttonTexts.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setButtonTexts(data);
+      })
+      .catch((error) => {
+        console.error("Error loading button texts:", error);
+        // Fallback to empty arrays if loading fails
+        setButtonTexts({ english: [], japanese: [] });
+      });
+
     // Set background image based on selected craft
     switch (selectedCraft.toLowerCase()) {
       case "bidri":
@@ -147,6 +159,15 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
 
   const handleButtonClick = (index) => {
     setActiveText(activeText === index ? null : index);
+  }
+
+  const buttonOffsets = {
+    0: -120, // loom
+    1: 0, // bidiri
+    2: 97, // block
+    3: 135, // dying
+    4: 137,  // chakra
+    5: 162,  // zardozi
   };
 
   return (
@@ -181,7 +202,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
         </div>
       </div>
 
-      {/* Explore Frequencies - Simplified without animations */}
+      {/* Explore Frequencies */}
       <div className="rounded-xl overflow-hidden flex-grow relative border-1 bg-black border-[#f2e9c9] circuit-board">
         <div className="absolute top-0 left-0 p-4 z-20 w-full">
           <h2 className="text-2xl font-serif italic text-center text-white mb-4">
@@ -237,12 +258,15 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                   start={buttonIds[index]}
                   end={textBoxIds[index]}
                   startAnchor="middle"
-                  endAnchor="bottom"
+                  endAnchor={{
+                    position: "bottom",
+                    offset: { x: buttonOffsets[index] },
+                  }}
                   color="#f2e9c9"
                   strokeWidth={1}
-                  path="smooth"
-                  curveness={0.4}
-                  headSize={10}
+                  path="straight"
+                  curveness={0}
+                  headSize={0}
                   zIndex={10}
                 />
               )}

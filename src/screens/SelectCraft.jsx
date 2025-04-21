@@ -177,6 +177,7 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
           style={{ width: `${containerSize}px`, height: `${containerSize}px` }}
         >
           {/* Center Circle */}
+          {/* Center Circle */}
           <motion.div
             variants={centerVariants}
             className="absolute rounded-full overflow-hidden border border-gray-300 bg-gray-700 z-10"
