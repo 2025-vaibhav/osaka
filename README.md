@@ -1,4 +1,4 @@
-Exhibition for 55 inch touch screen TV in Tokyo
+3840x2160
 <br />
 https://docs.google.com/spreadsheets/d/1WFA3MLaxxw34ZOcFUeKtZQ_wGclyYWSTk7R9_2zTDug/edit?gid=0#gid=0
 <br />
