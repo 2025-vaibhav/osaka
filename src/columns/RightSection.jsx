@@ -9,10 +9,10 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
   const { language } = useLanguage(sectionId);
   const [craftData, setCraftData] = useState(null);
   const [toolsText, setToolsText] = useState("");
-  // Initialize with a default value (0 for Loom Weaving)
-  const [activeText, setActiveText] = useState(0);
+  const [activeText, setActiveText] = useState(null);
   const [backgroundImage, setBackgroundImage] = useState("");
   const [buttonTexts, setButtonTexts] = useState({ english: [], japanese: [] });
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const craftToButtonIndex = {
     bidri: 1,
@@ -35,148 +35,6 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     { top: 465, right: 43 },
   ];
 
-  useEffect(() => {
-    // Load button texts from JSON file
-    fetch("/buttonTexts.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setButtonTexts(data);
-      })
-      .catch((error) => {
-        console.error("Error loading button texts:", error);
-        // Fallback to empty arrays if loading fails
-        setButtonTexts({ english: [], japanese: [] });
-      });
-
-    // Set initial background image
-    const defaultCraft = "loom weaving";
-    const initialCraft = selectedCraft
-      ? selectedCraft.toLowerCase()
-      : defaultCraft;
-
-    // Set background image based on selected craft or default craft
-    updateBackgroundImage(initialCraft);
-
-    fetch("/english-data.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setCraftData(data);
-        updateToolsText(data, initialCraft);
-      })
-      .catch((err) => {
-        console.error("Error loading JSON:", err);
-        setToolsText(
-          language === "english"
-            ? "Failed to load tools information."
-            : "道具情報の読み込みに失敗しました。"
-        );
-      });
-
-    // Initialize with the correct button for the selected craft or default
-    initializeActiveButton(initialCraft, originalCraftName);
-  }, []);
-
-  // This effect runs when selectedCraft or language changes
-  useEffect(() => {
-    if (!selectedCraft) return;
-
-    const craftName = selectedCraft.toLowerCase();
-
-    // Update background image
-    updateBackgroundImage(craftName);
-
-    // Update tools text if data is available
-    if (craftData) {
-      updateToolsText(craftData, craftName);
-    }
-
-    // Update active button
-    initializeActiveButton(craftName, originalCraftName);
-  }, [selectedCraft, language, originalCraftName]);
-
-  // Helper function to update background image
-  const updateBackgroundImage = (craftName) => {
-    switch (craftName) {
-      case "bidri":
-        setBackgroundImage("/vinod-pics/bidriware/tools.png");
-        break;
-      case "zardozi":
-        setBackgroundImage("/vinod-pics/zardozi/tools.png");
-        break;
-      case "charkha":
-        setBackgroundImage("/vinod-pics/charkha/tools.png");
-        break;
-      case "loom weaving":
-        setBackgroundImage("/vinod-pics/loom-weaving/tools.png");
-        break;
-      case "dyeing":
-        setBackgroundImage("/vinod-pics/dyeing/tools.png");
-        break;
-      case "block printing":
-        setBackgroundImage("/vinod-pics/block-printing/tools.png");
-        break;
-      default:
-        setBackgroundImage("/vinod-pics/loom-weaving/tools.png"); // Default image
-    }
-  };
-
-  // Helper function to update tools text
-  const updateToolsText = (data, craftName) => {
-    const craft = data.crafts.find(
-      (craft) =>
-        craft.name.English.toLowerCase() === craftName ||
-        craft.name.English.toLowerCase() === craftName.replace(" ", "_")
-    );
-
-    if (craft && craft.tools_text) {
-      setToolsText(
-        language === "english"
-          ? craft.tools_text.English
-          : craft.tools_text.Japanese || craft.tools_text.English
-      );
-    } else {
-      setToolsText(
-        language === "english"
-          ? "No tools information available for this craft."
-          : "この工芸に関する道具の情報はありません。"
-      );
-    }
-  };
-
-  // Helper function to initialize active button
-  const initializeActiveButton = (craftName, originalName) => {
-    // Try to match by craftName first
-    let buttonIndex = craftToButtonIndex[craftName];
-
-    // If not found and we have originalName, try to match by that
-    if (buttonIndex === undefined && originalName) {
-      // Map original craft names to their corresponding button indices
-      const originalCraftMapping = {
-        Bidriware: 1,
-        ビドリ: 1,
-        Zardozi: 5,
-        ザルドジ: 5,
-        Charkha: 4,
-        チャルカ: 4,
-        "Loom Weaving": 0,
-        織機織り: 0,
-        Dyeing: 3,
-        染色: 3,
-        "Block Printing": 2,
-        ブロック印刷: 2,
-      };
-
-      buttonIndex = originalCraftMapping[originalName];
-    }
-
-    // If still undefined, default to 0 (Loom Weaving)
-    if (buttonIndex === undefined) {
-      buttonIndex = 0;
-    }
-
-    setActiveText(buttonIndex);
-  };
-
   const buttonOffsets = {
     0: -120, // loom
     1: 0, // bidiri
@@ -185,6 +43,208 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     4: 137, // chakra
     5: 162, // zardozi
   };
+
+  // Default to Loom Weaving if no craft is selected
+  const determineDefaultCraft = () => {
+    if (selectedCraft) {
+      return selectedCraft.toLowerCase();
+    }
+
+    if (originalCraftName) {
+      const craftMap = {
+        Bidriware: "bidri",
+        ビドリ: "bidri",
+        Zardozi: "zardozi",
+        ザルドジ: "zardozi",
+        Dyeing: "dyeing",
+        染色: "dyeing",
+        Charkha: "charkha",
+        チャルカ: "charkha",
+        "Loom Weaving": "loom weaving",
+        織機織り: "loom weaving",
+        "Block Printing": "block printing",
+        ブロック印刷: "block printing",
+      };
+      return craftMap[originalCraftName] || "loom weaving";
+    }
+
+    return "loom weaving";
+  };
+
+  // This handles all initialization at once to prevent race conditions
+  useEffect(() => {
+    let isMounted = true;
+    const defaultCraft = determineDefaultCraft();
+
+    // Initialize background image based on the default craft
+    const getBackgroundImage = (craftName) => {
+      const imageMap = {
+        bidri: "/vinod-pics/bidriware/tools.png",
+        zardozi: "/vinod-pics/zardozi/tools.png",
+        charkha: "/vinod-pics/charkha/tools.png",
+        "loom weaving": "/vinod-pics/loom-weaving/tools.png",
+        dyeing: "/vinod-pics/dyeing/tools.png",
+        "block printing": "/vinod-pics/block-printing/tools.png",
+      };
+      return imageMap[craftName] || "/vinod-pics/loom-weaving/tools.png";
+    };
+
+    if (isMounted) {
+      setBackgroundImage(getBackgroundImage(defaultCraft));
+
+      // Set initial active button
+      const buttonIdx = craftToButtonIndex[defaultCraft];
+      if (buttonIdx !== undefined) {
+        setActiveText(buttonIdx);
+      } else {
+        // Default to loom weaving (button 0) if no match found
+        setActiveText(0);
+      }
+    }
+
+    // Load button texts
+    fetch("/buttonTexts.json")
+      .then((response) => response.json())
+      .then((data) => {
+        if (isMounted) {
+          setButtonTexts(data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error loading button texts:", error);
+        if (isMounted) {
+          setButtonTexts({ english: [], japanese: [] });
+        }
+      });
+
+    // Load craft data
+    fetch("/english-data.json")
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted) {
+          setCraftData(data);
+
+          // Set tools text
+          const craft = data.crafts.find(
+            (c) =>
+              c.name.English.toLowerCase() === defaultCraft ||
+              c.name.English.toLowerCase() === defaultCraft.replace(" ", "_")
+          );
+
+          if (craft && craft.tools_text) {
+            setToolsText(
+              language === "english"
+                ? craft.tools_text.English
+                : craft.tools_text.Japanese || craft.tools_text.English
+            );
+          } else {
+            setToolsText(
+              language === "english"
+                ? "No tools information available for this craft."
+                : "この工芸に関する道具の情報はありません。"
+            );
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("Error loading JSON:", err);
+        if (isMounted) {
+          setToolsText(
+            language === "english"
+              ? "Failed to load tools information."
+              : "道具情報の読み込みに失敗しました。"
+          );
+        }
+      })
+      .finally(() => {
+        if (isMounted) {
+          setIsInitialized(true);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []); // Empty dependency array ensures this only runs once at mount
+
+  // This effect handles updates when selectedCraft or language changes
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const currentCraft = determineDefaultCraft();
+
+    // Update background image
+    const getBackgroundImage = (craftName) => {
+      const imageMap = {
+        bidri: "/vinod-pics/bidriware/tools.png",
+        zardozi: "/vinod-pics/zardozi/tools.png",
+        charkha: "/vinod-pics/charkha/tools.png",
+        "loom weaving": "/vinod-pics/loom-weaving/tools.png",
+        dyeing: "/vinod-pics/dyeing/tools.png",
+        "block printing": "/vinod-pics/block-printing/tools.png",
+      };
+      return imageMap[craftName] || "/vinod-pics/loom-weaving/tools.png";
+    };
+
+    setBackgroundImage(getBackgroundImage(currentCraft));
+
+    // Update active button
+    const buttonIdx = craftToButtonIndex[currentCraft];
+    if (buttonIdx !== undefined) {
+      setActiveText(buttonIdx);
+    }
+
+    // Update tools text
+    if (craftData) {
+      const craft = craftData.crafts.find(
+        (c) =>
+          c.name.English.toLowerCase() === currentCraft ||
+          c.name.English.toLowerCase() === currentCraft.replace(" ", "_")
+      );
+
+      if (craft && craft.tools_text) {
+        setToolsText(
+          language === "english"
+            ? craft.tools_text.English
+            : craft.tools_text.Japanese || craft.tools_text.English
+        );
+      } else {
+        setToolsText(
+          language === "english"
+            ? "No tools information available for this craft."
+            : "この工芸に関する道具の情報はありません。"
+        );
+      }
+    }
+  }, [selectedCraft, language, isInitialized, craftData, originalCraftName]);
+
+  // Console logs for debugging
+  useEffect(() => {
+    console.log("Current state:", {
+      selectedCraft,
+      originalCraftName,
+      activeText,
+      backgroundImage,
+      buttonTextsLength: buttonTexts[language]?.length || 0,
+      isInitialized,
+    });
+  }, [
+    selectedCraft,
+    originalCraftName,
+    activeText,
+    backgroundImage,
+    buttonTexts,
+    language,
+    isInitialized,
+  ]);
+
+  // Force default selection if activeText is still null after initialization
+  useEffect(() => {
+    if (isInitialized && activeText === null) {
+      console.log("Setting default activeText to 0");
+      setActiveText(0);
+    }
+  }, [isInitialized, activeText]);
 
   return (
     <div className="w-[25%] flex flex-col gap-4 pl-4">
@@ -225,9 +285,19 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
             {language === "english" ? "Explore Frequencies" : "周波数を探索"}
           </h2>
 
-          {/* Text boxes - Simplified */}
-          {buttonTexts[language === "english" ? "english" : "japanese"].map(
-            (text, index) => (
+          {/* Default text if activeText is null or button texts aren't loaded yet */}
+          {(activeText === null || buttonTexts[language]?.length === 0) && (
+            <div className="bg-black/80 border text-center border-[#f2e9c9] rounded p-4 mb-4 text-white text-sm">
+              {language === "english"
+                ? "Select a point to explore frequencies"
+                : "周波数を探索するポイントを選択してください"}
+            </div>
+          )}
+
+          {/* Text boxes - Only render if we have data and activeText is set */}
+          {activeText !== null &&
+            buttonTexts[language]?.length > 0 &&
+            buttonTexts[language].map((text, index) => (
               <React.Fragment key={index}>
                 {activeText === index && (
                   <div
@@ -238,10 +308,9 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                   </div>
                 )}
               </React.Fragment>
-            )
-          )}
+            ))}
 
-          {/* Positioned buttons - Simplified */}
+          {/* Positioned buttons */}
           {buttonPositions.map((pos, index) => (
             <React.Fragment key={index}>
               <div
@@ -268,8 +337,8 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                 />
               </div>
 
-              {/* Arrow connections */}
-              {activeText === index && (
+              {/* Arrow connections - Only render if activeText is set and equals this index */}
+              {activeText === index && buttonTexts[language]?.length > 0 && (
                 <Xarrow
                   start={buttonIds[index]}
                   end={textBoxIds[index]}
