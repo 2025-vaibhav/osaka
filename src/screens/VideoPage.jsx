@@ -24,7 +24,7 @@ const VideoPage = ({ onNavigate, sectionId }) => {
     const calculateInitialWidth = () => {
       if (contentContainerRef.current) {
         const contentWidth = contentContainerRef.current.offsetWidth;
-        setInitialVideoWidth(contentWidth);
+        setInitialVideoWidth(contentWidth*0.99);
       }
     };
 
@@ -173,7 +173,7 @@ const VideoPage = ({ onNavigate, sectionId }) => {
           >
             <div
               ref={contentContainerRef}
-              className="w-[70%] text-gray-100 mx-auto text-justify"
+              className="w-[59%] text-gray-100 mx-auto text-justify"
             >
               {content[language].paragraphs.map((paragraph, index) => (
                 <p key={index} className="mb-4">

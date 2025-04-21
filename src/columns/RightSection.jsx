@@ -9,27 +9,10 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
   const { language } = useLanguage(sectionId);
   const [craftData, setCraftData] = useState(null);
   const [toolsText, setToolsText] = useState("");
-  const [activeText, setActiveText] = useState(null);
+  // Initialize with a default value (0 for Loom Weaving)
+  const [activeText, setActiveText] = useState(0);
   const [backgroundImage, setBackgroundImage] = useState("");
-
-  const buttonTexts = {
-    english: [
-      "The loom produces a rhythmic clack-clack as the shuttle shoots back and forth through the threads. You can also hear a soft thud when the beater presses the weft into place, along with the occasional swish of yarn being adjusted or pulled tight.",
-      "The scraping produces a coarse, grating noise—shhhrrrk, shhhrrrkclink, clink—as the artisan strikes tools against the metal surface. The scraping produces a coarse, grating noise—shhhrrrk, shhhrrrk—as a pointed tool is dragged to carve fine patterns into the alloy.",
-      "Block printing creates a thump or thud as the wooden block is pressed firmly onto the fabric. You might also hear a light squeezing sound when the block picks up ink or dye. A soft tap-tap as artisans align and stamp the block repeatedly across the cloth.",
-      "Dyeing involves the gentle sloshing and swishing of fabric being dipped into solution of dye. You might also hear dripping water as the cloth is lifted out, and the squeeze or squelch of excess dye being wrung out by hand.",
-      "The charkha produces a soft, continuous whirr as the wheel spins. Among various sounds, one is a gentle click or creak from the wooden parts, along with the faint zip of fibre twisting into thread between the fingers.",
-      "Zardozi work creates a soft prick-prick sound as the needle pierces the stretched fabric. The faint tink of varies in its volume when metal threads or sequins brush against each other. And the occasional rustle of the fabric during varies process of embellishing the textile.",
-    ],
-    japanese: [
-      "織機は、シャトルが糸の間を往復するたびに、カチカチというリズミカルな音を立てます。また、ビーターが緯糸を所定の位置に押し込むときに、かすかなドスンという音も聞こえ、時折、糸を調整したり、きつく引っ張ったりするときに、シューッという音が聞こえます。",
-      "職人が金属の表面に道具をこすりつけると、その削りくずのような粗い音（シュッ、シュッ、チリン、チリン）が生まれます。先の尖った道具を滑らせて合金に細かい模様を刻むと、その削りくずのような粗い音（シュッ、シュッ、チリン）が生まれます。",
-      "木版捺染では、木版が布にしっかりと押し付けられるため、ドンドンという音がします。また、版がインクや染料を吸収する際に、軽く押すような音が聞こえることもあります。職人が版を布に合わせ、繰り返し押し付ける際に、柔らかく「トントン」という音が聞こえます。",
-      "染色は、布を染料溶液に浸し、優しく揺すったり、振ったりしながら行います。布を引き上げる際に水が滴る音や、余分な染料を手で絞り出す際に水が滴る音も聞こえるかもしれません。",
-      "チャルカは、車輪が回転するたびに、柔らかく、持続的な音を発します。様々な音の中には、木製の部品から発せられる穏やかなカチッという音や、きしむ音、そして指の間で繊維が糸に絡み合うかすかな音などがあります。",
-      "ザルドジ細工は、針が張られた布地を刺すときに、柔らかな「チクチク」という音を生み出します。金属糸やスパンコールが擦れ合うと、かすかな「チリンチク」という音が聞こえ、音量は変化します。そして、織物に装飾を施す様々な工程で、時折、布地が擦れる音も聞こえます。",
-    ],
-  };
+  const [buttonTexts, setButtonTexts] = useState({ english: [], japanese: [] });
 
   const craftToButtonIndex = {
     bidri: 1,
@@ -65,8 +48,55 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
         setButtonTexts({ english: [], japanese: [] });
       });
 
-    // Set background image based on selected craft
-    switch (selectedCraft.toLowerCase()) {
+    // Set initial background image
+    const defaultCraft = "loom weaving";
+    const initialCraft = selectedCraft
+      ? selectedCraft.toLowerCase()
+      : defaultCraft;
+
+    // Set background image based on selected craft or default craft
+    updateBackgroundImage(initialCraft);
+
+    fetch("/english-data.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setCraftData(data);
+        updateToolsText(data, initialCraft);
+      })
+      .catch((err) => {
+        console.error("Error loading JSON:", err);
+        setToolsText(
+          language === "english"
+            ? "Failed to load tools information."
+            : "道具情報の読み込みに失敗しました。"
+        );
+      });
+
+    // Initialize with the correct button for the selected craft or default
+    initializeActiveButton(initialCraft, originalCraftName);
+  }, []);
+
+  // This effect runs when selectedCraft or language changes
+  useEffect(() => {
+    if (!selectedCraft) return;
+
+    const craftName = selectedCraft.toLowerCase();
+
+    // Update background image
+    updateBackgroundImage(craftName);
+
+    // Update tools text if data is available
+    if (craftData) {
+      updateToolsText(craftData, craftName);
+    }
+
+    // Update active button
+    initializeActiveButton(craftName, originalCraftName);
+  }, [selectedCraft, language, originalCraftName]);
+
+  // Helper function to update background image
+  const updateBackgroundImage = (craftName) => {
+    switch (craftName) {
       case "bidri":
         setBackgroundImage("/craft-pics/bidriware/tools.png");
         break;
@@ -86,88 +116,74 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
         setBackgroundImage("/craft-pics/block-printing/tools.png");
         break;
       default:
-        setBackgroundImage("");
+        setBackgroundImage("/vinod-pics/loom-weaving/tools.png"); // Default image
+    }
+  };
+
+  // Helper function to update tools text
+  const updateToolsText = (data, craftName) => {
+    const craft = data.crafts.find(
+      (craft) =>
+        craft.name.English.toLowerCase() === craftName ||
+        craft.name.English.toLowerCase() === craftName.replace(" ", "_")
+    );
+
+    if (craft && craft.tools_text) {
+      setToolsText(
+        language === "english"
+          ? craft.tools_text.English
+          : craft.tools_text.Japanese || craft.tools_text.English
+      );
+    } else {
+      setToolsText(
+        language === "english"
+          ? "No tools information available for this craft."
+          : "この工芸に関する道具の情報はありません。"
+      );
+    }
+  };
+
+  // Helper function to initialize active button
+  const initializeActiveButton = (craftName, originalName) => {
+    // Try to match by craftName first
+    let buttonIndex = craftToButtonIndex[craftName];
+
+    // If not found and we have originalName, try to match by that
+    if (buttonIndex === undefined && originalName) {
+      // Map original craft names to their corresponding button indices
+      const originalCraftMapping = {
+        Bidriware: 1,
+        ビドリ: 1,
+        Zardozi: 5,
+        ザルドジ: 5,
+        Charkha: 4,
+        チャルカ: 4,
+        "Loom Weaving": 0,
+        織機織り: 0,
+        Dyeing: 3,
+        染色: 3,
+        "Block Printing": 2,
+        ブロック印刷: 2,
+      };
+
+      buttonIndex = originalCraftMapping[originalName];
     }
 
-    fetch("/language-data.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setCraftData(data);
-        if (selectedCraft) {
-          const craft = data.crafts.find(
-            (craft) =>
-              craft.name.English.toLowerCase() ===
-                selectedCraft.toLowerCase() ||
-              craft.name.English.toLowerCase() ===
-                selectedCraft.replace(" ", "_").toLowerCase()
-          );
-          if (craft && craft.tools_text) {
-            setToolsText(
-              language === "english"
-                ? craft.tools_text.English
-                : craft.tools_text.Japanese || craft.tools_text.English
-            );
-          } else {
-            setToolsText(
-              language === "english"
-                ? "No tools information available for this craft."
-                : "この工芸に関する道具の情報はありません。"
-            );
-          }
-        }
-      })
-      .catch((err) => {
-        console.error("Error loading JSON:", err);
-        setToolsText(
-          language === "english"
-            ? "Failed to load tools information."
-            : "道具情報の読み込みに失敗しました。"
-        );
-      });
-
-    // Automatically select the corresponding dot for the selected craft
-    if (selectedCraft) {
-      // Try to match by selectedCraft first
-      let buttonIndex = craftToButtonIndex[selectedCraft.toLowerCase()];
-
-      // If not found and we have originalCraftName, try to match by that
-      if (buttonIndex === undefined && originalCraftName) {
-        // Map original craft names to their corresponding button indices
-        const originalCraftMapping = {
-          Bidriware: 1,
-          ビドリ: 1,
-          Zardozi: 5,
-          ザルドジ: 5,
-          Charkha: 4,
-          チャルカ: 4,
-          "Loom Weaving": 0,
-          織機織り: 0,
-          Dyeing: 3,
-          染色: 3,
-          "Block Printing": 2,
-          ブロック印刷: 2,
-        };
-
-        buttonIndex = originalCraftMapping[originalCraftName];
-      }
-
-      if (buttonIndex !== undefined) {
-        setActiveText(buttonIndex);
-      }
+    // If still undefined, default to 0 (Loom Weaving)
+    if (buttonIndex === undefined) {
+      buttonIndex = 0;
     }
-  }, [selectedCraft, language, originalCraftName]);
 
-  const handleButtonClick = (index) => {
-    setActiveText(activeText === index ? null : index);
-  }
+    setActiveText(buttonIndex);
+  };
 
   const buttonOffsets = {
     0: -120, // loom
     1: 0, // bidiri
     2: 97, // block
     3: 135, // dying
-    4: 137,  // chakra
-    5: 162,  // zardozi
+    4: 137, // chakra
+    5: 162, // zardozi
   };
 
   return (
@@ -243,7 +259,8 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                 }}
               >
                 <button
-                  className={`bg-red-500 h-3 w-3 rounded-full hover:bg-red-400 transition-colors ${
+                  onClick={() => setActiveText(index)}
+                  className={`bg-red-500 h-3 w-3 rounded-full ${
                     activeText === index
                       ? "ring-2 ring-white relative heartbeat"
                       : ""

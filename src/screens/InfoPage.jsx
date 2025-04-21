@@ -130,6 +130,7 @@ export default function InfoPage({ onNavigate, sectionId }) {
         <RightSection
           sectionId={sectionId}
           selectedCraft={craftMapping[language][selectedCraft]}
+          originalCraftName={selectedCraft} // Add this prop
         />
       </div>
 
