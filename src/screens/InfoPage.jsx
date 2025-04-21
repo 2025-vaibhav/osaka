@@ -118,6 +118,13 @@ export default function InfoPage({ onNavigate, sectionId }) {
     onNavigate("info-page", { selectedCraft: craft });
   };
 
+  // Log the current state for debugging
+  console.log("InfoPage state:", {
+    selectedCraft,
+    mappedCraft: craftMapping[language][selectedCraft],
+    language,
+  });
+
   return (
     <div className="w-full h-full gradient-box p-10 flex flex-col overflow-hidden">
       {/* Main Content Area */}
@@ -130,7 +137,7 @@ export default function InfoPage({ onNavigate, sectionId }) {
         <RightSection
           sectionId={sectionId}
           selectedCraft={craftMapping[language][selectedCraft]}
-          originalCraftName={selectedCraft} // Add this prop
+          originalCraftName={selectedCraft} // Pass the original craft name
         />
       </div>
 
