@@ -19,29 +19,29 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
         {
           name: "Charkha",
           image: "/craft-buttons/1.png",
-          bgImage: "/tags/Charkha.png",
+          bgImage: "/tags/eng/Charkha.png",
         },
         {
           name: "Block Printing",
           image: "/craft-buttons/2.png",
-          bgImage: "/tags/Block Printing.png",
+          bgImage: "/tags/eng/Block Printing.png",
         },
         {
           name: "Bidriware",
           image: "/craft-buttons/3.png",
-          bgImage: "/tags/Bidriware.png",
+          bgImage: "/tags/eng/Bidriware.png",
         },
         {
           name: "Zardozi",
           image: "/craft-buttons/4.png",
-          bgImage: "/tags/Zardozi.png",
+          bgImage: "/tags/eng/Zardozi.png",
         },
-        { name: "Dyeing", image: "/craft-buttons/5.png", bgImage: "/tags/Dyeing.png" },
+        { name: "Dyeing", image: "/craft-buttons/5.png", bgImage: "/tags/eng/Dyeing.png" },
       ],
       center: {
         name: "Loom Weaving",
         image: "/craft-buttons/6.png",
-        bgImage: "/tags/Loom weaving.png",
+        bgImage: "/tags/eng/Loom weaving.png",
       },
       title: "Select a craft practice to explore more",
       back: "Back",
@@ -51,29 +51,29 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
         {
           name: "チャルカ",
           image: "/craft-buttons/1.png",
-          bgImage: "/tags/Charkha.png",
+          bgImage: "/tags/jpn/Charkha.png",
         },
         {
           name: "ブロック印刷",
           image: "/craft-buttons/2.png",
-          bgImage: "/tags/Block Printing.png",
+          bgImage: "/tags/jpn/Block Printing.png",
         },
         {
           name: "ビドリ",
           image: "/craft-buttons/3.png",
-          bgImage: "/tags/Bidriware.png",
+          bgImage: "/tags/jpn/Bidriware.png",
         },
         {
           name: "ザルドジ",
           image: "/craft-buttons/4.png",
-          bgImage: "/tags/Zardozi.png",
+          bgImage: "/tags/jpn/Zardozi.png",
         },
-        { name: "染色", image: "/craft-buttons/5.png", bgImage: "/tags/Dyeing.png" },
+        { name: "染色", image: "/craft-buttons/5.png", bgImage: "/tags/jpn/Dyeing.png" },
       ],
       center: {
         name: "織機織り",
         image: "/craft-buttons/6.png",
-        bgImage: "/tags/Loom weaving.png",
+        bgImage: "/tags/jpn/Loom Weaving.png",
       },
       title: "探求する工芸を選択してください",
       back: "戻る",
@@ -217,7 +217,7 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
             whileTap={{ scale: 0.95, filter: "brightness(0.8)" }}
           >
             <img
-              src={"/tags/Loom weaving.png"}
+              src={crafts[language].center.bgImage}
               alt={"center"}
               className="w-full h-full object-contain"
             />
@@ -256,7 +256,7 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
                 { distance: 190, offset: 5 }, // Top (Charkha)
                 { distance: 80, offset: -40 }, // Top-right (Block Printing)
                 { distance: 290, offset: 40 }, // Bottom-right (Bidriware)
-                { distance: 340, offset: 20 }, // Bottom-left (Zardozi)
+                { distance: 340 , offset: 20 }, // Bottom-left (Zardozi)
                 { distance: 320, offset: -20 }, // Top-left (Dyeing)
               ];
               return configs[index];
