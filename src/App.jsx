@@ -11,12 +11,12 @@ const App = () => {
   }, []);
 
   const sectionClass =
-    "h-[1026px] border border-white w-[1856px] relative rounded-[56px] overflow-hidden";
+    "h-[1026px] border border-zinc-700 w-[1856px] z-10 relative rounded-[56px] overflow-hidden";
 
   return (
     <LanguageProvider>
       <Router>
-        <div className="grid grid-cols-2 grid-rows-2 gap-8 p-8">
+        <div className="grid grid-cols-2 grid-rows-2 gap-11 p-8 bg-[#0a0a0a]">
           <Section
             sectionId="section1"
             className={`${sectionClass} rotate-180`}

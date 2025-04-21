@@ -18,29 +18,29 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
       items: [
         {
           name: "Charkha",
-          image: "/craft/1.png",
+          image: "/craft-buttons/1.png",
           bgImage: "/tags/Charkha.png",
         },
         {
           name: "Block Printing",
-          image: "/craft/2.png",
+          image: "/craft-buttons/2.png",
           bgImage: "/tags/Block Printing.png",
         },
         {
           name: "Bidriware",
-          image: "/craft/3.png",
+          image: "/craft-buttons/3.png",
           bgImage: "/tags/Bidriware.png",
         },
         {
           name: "Zardozi",
-          image: "/craft/4.png",
+          image: "/craft-buttons/4.png",
           bgImage: "/tags/Zardozi.png",
         },
-        { name: "Dyeing", image: "/craft/5.png", bgImage: "/tags/Dyeing.png" },
+        { name: "Dyeing", image: "/craft-buttons/5.png", bgImage: "/tags/Dyeing.png" },
       ],
       center: {
         name: "Loom Weaving",
-        image: "/craft/6.png",
+        image: "/craft-buttons/6.png",
         bgImage: "/tags/Loom weaving.png",
       },
       title: "Select a craft practice to explore more",
@@ -50,29 +50,29 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
       items: [
         {
           name: "チャルカ",
-          image: "/craft/1.png",
+          image: "/craft-buttons/1.png",
           bgImage: "/tags/Charkha.png",
         },
         {
           name: "ブロック印刷",
-          image: "/craft/2.png",
+          image: "/craft-buttons/2.png",
           bgImage: "/tags/Block Printing.png",
         },
         {
           name: "ビドリ",
-          image: "/craft/3.png",
+          image: "/craft-buttons/3.png",
           bgImage: "/tags/Bidriware.png",
         },
         {
           name: "ザルドジ",
-          image: "/craft/4.png",
+          image: "/craft-buttons/4.png",
           bgImage: "/tags/Zardozi.png",
         },
-        { name: "染色", image: "/craft/5.png", bgImage: "/tags/Dyeing.png" },
+        { name: "染色", image: "/craft-buttons/5.png", bgImage: "/tags/Dyeing.png" },
       ],
       center: {
         name: "織機織り",
-        image: "/craft/6.png",
+        image: "/craft-buttons/6.png",
         bgImage: "/tags/Loom weaving.png",
       },
       title: "探求する工芸を選択してください",
@@ -187,20 +187,22 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
               width: `${centerCircleSize}px`,
               height: `${centerCircleSize}px`,
             }}
-            whileHover={{ scale: 1.05, rotate: 5 }}
+            whileHover={{ scale: 1.1, zIndex: 20 }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => handleCraftSelect(crafts[language].center.name)}
-          >
+            >
             <img
               src={crafts[language].center.image}
               alt={crafts[language].center.name}
               className="w-full h-full object-cover"
-            />
+              />
           </motion.div>
 
           {/* Center Reference Box */}
           <motion.div
             variants={centerVariants}
-            className="absolute h-fit flex justify-center items-center text-center w-fit z-10"
+            className="absolute h-fit flex justify-center items-center text-center w-fit"
+            onClick={() => handleCraftSelect(crafts[language].center.name)}
             style={{
               top: `calc(50% - ${centerCircleSize / 2 - 180}px)`,
               left: `calc(50% - ${centerCircleSize / 2 - 100}px)`,
@@ -210,8 +212,9 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
               backgroundSize: "contain",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
-              zIndex: 5,
             }}
+            whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
+            whileTap={{ scale: 0.95, filter: "brightness(0.8)" }}
           >
             <img
               src={"/tags/Loom weaving.png"}
@@ -284,12 +287,12 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
                   whileHover={{ scale: 1.1, zIndex: 20 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => handleCraftSelect(item.name)}
-                >
+                  >
                   <img
                     src={item.image}
                     alt={item.name}
                     className="w-full h-full object-cover"
-                  />
+                    />
                 </motion.div>
 
                 {/* Reference Box */}
@@ -299,6 +302,7 @@ const SelectCraft = ({ onNavigate, sectionId }) => {
                   initial="hidden"
                   animate="visible"
                   className="absolute h-fit flex justify-center items-center text-center w-fit z-10"
+                  onClick={() => handleCraftSelect(item.name)}
                   style={{
                     left: `${boxX - 80}px`,
                     top: `${boxY - 32}px`,

@@ -18,37 +18,37 @@ const MiddleSection = ({ selectedCraft, sectionId }) => {
       case "ビドリ":
         craftPath = "bidriware";
         imageCount = 8;
-        setHeroImage("/vinod-pics/bidriware/hero.png");
+        setHeroImage("/craft-pics/bidriware/hero.png");
         break;
       case "zardozi":
       case "ザルドジ":
         craftPath = "zardozi";
         imageCount = 5;
-        setHeroImage("/vinod-pics/zardozi/hero.png");
+        setHeroImage("/craft-pics/zardozi/hero.png");
         break;
       case "charkha":
       case "チャルカ":
         craftPath = "charkha";
         imageCount = 6;
-        setHeroImage("/vinod-pics/charkha/hero.png");
+        setHeroImage("/craft-pics/charkha/hero.png");
         break;
       case "loom weaving":
       case "織機織り":
         craftPath = "loom-weaving";
         imageCount = 6;
-        setHeroImage("/vinod-pics/loom-weaving/hero.png");
+        setHeroImage("/craft-pics/loom-weaving/hero.png");
         break;
       case "dyeing":
       case "染色":
         craftPath = "dyeing";
         imageCount = 6;
-        setHeroImage("/vinod-pics/dyeing/hero.png");
+        setHeroImage("/craft-pics/dyeing/hero.png");
         break;
       case "block printing":
       case "ブロック印刷":
         craftPath = "block-printing";
         imageCount = 5;
-        setHeroImage("/vinod-pics/block-printing/hero.png");
+        setHeroImage("/craft-pics/block-printing/hero.png");
         break;
       default:
         setHeroImage("");
@@ -59,12 +59,12 @@ const MiddleSection = ({ selectedCraft, sectionId }) => {
     // Generate the gallery image paths
     const images = [];
     for (let i = 1; i <= imageCount; i++) {
-      images.push(`/vinod-pics/${craftPath}/gallery/${i}.png`);
+      images.push(`/craft-pics/${craftPath}/gallery/${i}.png`);
     }
     setSlideImages(images);
     setCurrentSlide(0); // Reset to first slide when craft changes
 
-    fetch("/english-data.json")
+    fetch("/language-data.json")
       .then((res) => res.json())
       .then((data) => {
         setCraftData(data);

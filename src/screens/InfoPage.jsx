@@ -6,14 +6,14 @@ import RightSection from "../columns/RightSection";
 import { useLanguage } from "../LanguageContext";
 
 // Import your images (adjust paths as needed)
-import charkhaIcon from "/craft/1.png";
-import bidriwareIcon from "/craft/3.png";
-import zardoziIcon from "/craft/4.png";
+import charkhaIcon from "/craft-buttons/1.png";
+import bidriwareIcon from "/craft-buttons/3.png";
+import zardoziIcon from "/craft-buttons/4.png";
 import {
   default as blockPrintingIcon,
   default as dyeingIcon,
-} from "/craft/5.png";
-import loomWeavingIcon from "/craft/6.png";
+} from "/craft-buttons/5.png";
+import loomWeavingIcon from "/craft-buttons/6.png";
 
 export default function InfoPage({ onNavigate, sectionId }) {
   const [searchParams] = useSearchParams();
@@ -26,7 +26,7 @@ export default function InfoPage({ onNavigate, sectionId }) {
       Zardozi: "Zardozi",
       Dyeing: "Dyeing",
       Charkha: "Charkha",
-      "Loom Weaving": "Loom weaving",
+      "Loom Weaving": "Loom Weaving",
       "Block Printing": "Block Printing",
     },
     japanese: {
@@ -34,7 +34,7 @@ export default function InfoPage({ onNavigate, sectionId }) {
       ザルドジ: "Zardozi",
       染色: "Dyeing",
       チャルカ: "Charkha",
-      織機織り: "Loom weaving",
+      織機織り: "Loom Weaving",
       ブロック印刷: "Block Printing",
     },
   };

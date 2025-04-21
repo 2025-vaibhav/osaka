@@ -331,7 +331,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                   onClick={() => setActiveText(index)}
                   className={`bg-red-500 h-3 w-3 rounded-full ${
                     activeText === index
-                      ? "ring-2 ring-white relative heartbeat "
+                      ? "ring-2 ring-white relative heartbeat"
                       : ""
                   }`}
                 />

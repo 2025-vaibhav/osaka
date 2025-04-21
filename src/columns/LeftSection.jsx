@@ -24,82 +24,82 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
       case "bidri":
       case "bidriware":
       case "ビドリ":
-        setIntroBackground("/vinod-pics/bidriware/introduction.png");
-        setDesignBackground("/vinod-pics/bidriware/design.png");
-        setHistoryBackground("/vinod-pics/bidriware/history.png");
+        setIntroBackground("/craft-pics/bidriware/introduction.png");
+        setDesignBackground("/craft-pics/bidriware/design.png");
+        setHistoryBackground("/craft-pics/bidriware/history.png");
         setProcessBackgrounds([
-          "/vinod-pics/bidriware/process/1.png",
-          "/vinod-pics/bidriware/process/2.png",
-          "/vinod-pics/bidriware/process/3.png",
-          "/vinod-pics/bidriware/process/4.png",
-          "/vinod-pics/bidriware/process/5.png",
+          "/craft-pics/bidriware/Process/1.jpeg",
+          "/craft-pics/bidriware/Process/2.jpeg",
+          "/craft-pics/bidriware/Process/3.jpeg",
+          "/craft-pics/bidriware/Process/4.jpeg",
+          "/craft-pics/bidriware/Process/5.jpeg",
         ]);
         break;
       case "zardozi":
       case "ザルドジ":
-        setIntroBackground("/vinod-pics/zardozi/introduction.png");
-        setDesignBackground("/vinod-pics/zardozi/design.png");
-        setHistoryBackground("/vinod-pics/zardozi/history.png");
+        setIntroBackground("/craft-pics/zardozi/introduction.png");
+        setDesignBackground("/craft-pics/zardozi/design.png");
+        setHistoryBackground("/craft-pics/zardozi/history.png");
         setProcessBackgrounds([
-          "/vinod-pics/zardozi/process/1.png",
-          "/vinod-pics/zardozi/process/2.png",
-          "/vinod-pics/zardozi/process/3.png",
-          "/vinod-pics/zardozi/process/4.png",
-          "/vinod-pics/zardozi/process/5.png",
+          "/craft-pics/zardozi/process/1.png",
+          "/craft-pics/zardozi/process/2.png",
+          "/craft-pics/zardozi/process/3.png",
+          "/craft-pics/zardozi/process/4.png",
+          "/craft-pics/zardozi/process/5.png",
         ]);
         break;
       case "charkha":
       case "チャルカ":
-        setIntroBackground("/vinod-pics/charkha/introduction.png");
-        setDesignBackground("/vinod-pics/charkha/design.png");
-        setHistoryBackground("/vinod-pics/charkha/history.png");
+        setIntroBackground("/craft-pics/charkha/introduction.png");
+        setDesignBackground("/craft-pics/charkha/design.png");
+        setHistoryBackground("/craft-pics/charkha/history.png");
         setProcessBackgrounds([
-          "/vinod-pics/charkha/process/1.png",
-          "/vinod-pics/charkha/process/2.png",
-          "/vinod-pics/charkha/process/3.png",
-          "/vinod-pics/charkha/process/4.png",
-          "/vinod-pics/charkha/process/5.png",
+          "/craft-pics/charkha/process/1.png",
+          "/craft-pics/charkha/process/2.png",
+          "/craft-pics/charkha/process/3.png",
+          "/craft-pics/charkha/process/4.png",
+          "/craft-pics/charkha/process/5.png",
         ]);
         break;
       case "loom weaving":
       case "loom_weaving":
       case "織機織り":
-        setIntroBackground("/vinod-pics/loom-weaving/introduction.png");
-        setDesignBackground("/vinod-pics/loom-weaving/design.png");
-        setHistoryBackground("/vinod-pics/loom-weaving/history.png");
+        setIntroBackground("/craft-pics/loom-weaving/introduction.png");
+        setDesignBackground("/craft-pics/loom-weaving/design.png");
+        setHistoryBackground("/craft-pics/loom-weaving/history.png");
         setProcessBackgrounds([
-          "/vinod-pics/loom-weaving/process/1.png",
-          "/vinod-pics/loom-weaving/process/2.png",
-          "/vinod-pics/loom-weaving/process/3.png",
-          "/vinod-pics/loom-weaving/process/4.png",
-          "/vinod-pics/loom-weaving/process/5.png",
+          "/craft-pics/loom-weaving/process/1.png",
+          "/craft-pics/loom-weaving/process/2.png",
+          "/craft-pics/loom-weaving/process/3.png",
+          "/craft-pics/loom-weaving/process/4.png",
+          "/craft-pics/loom-weaving/process/5.png",
         ]);
         break;
       case "dyeing":
       case "染色":
-        setIntroBackground("/vinod-pics/dyeing/introduction.png");
-        setDesignBackground("/vinod-pics/dyeing/design.png");
-        setHistoryBackground("/vinod-pics/dyeing/history.png");
+        setIntroBackground("/craft-pics/dyeing/introduction.png");
+        setDesignBackground("/craft-pics/dyeing/design.png");
+        setHistoryBackground("/craft-pics/dyeing/history.png");
         setProcessBackgrounds([
-          "/vinod-pics/dyeing/process/1.png",
-          "/vinod-pics/dyeing/process/2.png",
-          "/vinod-pics/dyeing/process/3.png",
-          "/vinod-pics/dyeing/process/4.png",
-          "/vinod-pics/dyeing/process/5.png",
+          "/craft-pics/dyeing/process/1.png",
+          "/craft-pics/dyeing/process/2.png",
+          "/craft-pics/dyeing/process/3.png",
+          "/craft-pics/dyeing/process/4.png",
+          "/craft-pics/dyeing/process/5.png",
         ]);
         break;
       case "block printing":
       case "block_printing":
       case "ブロック印刷":
-        setIntroBackground("/vinod-pics/block-printing/introduction.png");
-        setDesignBackground("/vinod-pics/block-printing/design.png");
-        setHistoryBackground("/vinod-pics/block-printing/history.png");
+        setIntroBackground("/craft-pics/block-printing/introduction.png");
+        setDesignBackground("/craft-pics/block-printing/design.png");
+        setHistoryBackground("/craft-pics/block-printing/history.png");
         setProcessBackgrounds([
-          "/vinod-pics/block-printing/process/1.png",
-          "/vinod-pics/block-printing/process/2.png",
-          "/vinod-pics/block-printing/process/3.png",
-          "/vinod-pics/block-printing/process/4.png",
-          "/vinod-pics/block-printing/process/5.png",
+          "/craft-pics/block-printing/process/1.png",
+          "/craft-pics/block-printing/process/2.png",
+          "/craft-pics/block-printing/process/3.png",
+          "/craft-pics/block-printing/process/4.png",
+          "/craft-pics/block-printing/process/5.png",
         ]);
         break;
       default:
@@ -109,7 +109,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
         setProcessBackgrounds([]);
     }
 
-    fetch("/english-data.json")
+    fetch("/language-data.json")
       .then((res) => res.json())
       .then((data) => {
         setCraftData(data);

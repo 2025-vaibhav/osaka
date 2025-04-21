@@ -183,7 +183,7 @@ const VideoPage = ({ onNavigate, sectionId }) => {
               <p className="mb-4 italic text-sm">{content[language].note}</p>
               <div className="h-2"></div>
             </div>
-          </div>
+          </div>  
         </div>
 
         {/* Next Button */}
