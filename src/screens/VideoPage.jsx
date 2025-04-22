@@ -8,8 +8,8 @@ const VideoPage = ({ onNavigate, sectionId }) => {
   const [content, setContent] = useState(null);
 
   const styleVariables = {
-    "--video-height": "70%", 
-    "--text-width": "55%", 
+    "--video-height": "50%", 
+    "--text-width": "39%", 
     "--video-object-fit": "contain", 
   };
 
@@ -96,7 +96,7 @@ const VideoPage = ({ onNavigate, sectionId }) => {
               style={{ width: "var(--text-width)" }}
             >
               {content[language].paragraphs.map((paragraph, index) => (
-                <p key={index} className="mb-4">
+                <p key={index} className="mb-4 text-xl">
                   {paragraph}
                 </p>
               ))}

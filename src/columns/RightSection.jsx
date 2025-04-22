@@ -13,6 +13,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
   const [backgroundImage, setBackgroundImage] = useState("");
   const [buttonTexts, setButtonTexts] = useState({ english: [], japanese: [] });
   const [isInitialized, setIsInitialized] = useState(false);
+  const [expandedPanel, setExpandedPanel] = useState(null);
 
   const craftToButtonIndex = {
     bidri: 1,
@@ -27,12 +28,12 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
   const textBoxIds = ["text1", "text2", "text3", "text4", "text5", "text6"];
 
   const buttonPositions = [
-    { top: 397, left: 86 },
-    { top: 488, right: 203 },
-    { top: 450, right: 110 },
-    { top: 318, right: 72 },
-    { top: 455, left: 345 },
-    { top: 465, right: 43 },
+    { top: 392, left: 86 },
+    { top: 480, right: 203 },
+    { top: 442, right: 110 },
+    { top: 313, right: 72 },
+    { top: 445, left: 345 },
+    { top: 458, right: 43 },
   ];
 
   const buttonOffsets = {
@@ -44,7 +45,13 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     5: 162, // zardozi
   };
 
-  // Default to Loom Weaving if no craft is selected
+  // Animation variants for text content
+  const textVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -10 },
+  };
+
   const determineDefaultCraft = () => {
     if (selectedCraft) {
       return selectedCraft.toLowerCase();
@@ -71,12 +78,15 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     return "loom weaving";
   };
 
+  const togglePanel = (panel) => {
+    setExpandedPanel(expandedPanel === panel ? null : panel);
+  };
+
   // This handles all initialization at once to prevent race conditions
   useEffect(() => {
     let isMounted = true;
     const defaultCraft = determineDefaultCraft();
 
-    // Initialize background image based on the default craft
     const getBackgroundImage = (craftName) => {
       const imageMap = {
         bidri: "/craft-pics/bidriware/tools.png",
@@ -91,18 +101,14 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
 
     if (isMounted) {
       setBackgroundImage(getBackgroundImage(defaultCraft));
-
-      // Set initial active button
       const buttonIdx = craftToButtonIndex[defaultCraft];
       if (buttonIdx !== undefined) {
         setActiveText(buttonIdx);
       } else {
-        // Default to loom weaving (button 0) if no match found
         setActiveText(0);
       }
     }
 
-    // Load button texts
     fetch("/buttonTexts.json")
       .then((response) => response.json())
       .then((data) => {
@@ -117,14 +123,11 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
         }
       });
 
-    // Load craft data
     fetch("/language-data.json")
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
           setCraftData(data);
-
-          // Set tools text
           const craft = data.crafts.find(
             (c) =>
               c.name.English.toLowerCase() === defaultCraft ||
@@ -165,15 +168,12 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     return () => {
       isMounted = false;
     };
-  }, []); // Empty dependency array ensures this only runs once at mount
+  }, []);
 
-  // This effect handles updates when selectedCraft or language changes
   useEffect(() => {
     if (!isInitialized) return;
-
     const currentCraft = determineDefaultCraft();
 
-    // Update background image
     const getBackgroundImage = (craftName) => {
       const imageMap = {
         bidri: "/craft-pics/bidriware/tools.png",
@@ -187,14 +187,11 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     };
 
     setBackgroundImage(getBackgroundImage(currentCraft));
-
-    // Update active button
     const buttonIdx = craftToButtonIndex[currentCraft];
     if (buttonIdx !== undefined) {
       setActiveText(buttonIdx);
     }
 
-    // Update tools text
     if (craftData) {
       const craft = craftData.crafts.find(
         (c) =>
@@ -218,38 +215,20 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     }
   }, [selectedCraft, language, isInitialized, craftData, originalCraftName]);
 
-  // Console logs for debugging
-  useEffect(() => {
-    console.log("Current state:", {
-      selectedCraft,
-      originalCraftName,
-      activeText,
-      backgroundImage,
-      buttonTextsLength: buttonTexts[language]?.length || 0,
-      isInitialized,
-    });
-  }, [
-    selectedCraft,
-    originalCraftName,
-    activeText,
-    backgroundImage,
-    buttonTexts,
-    language,
-    isInitialized,
-  ]);
-
-  // Force default selection if activeText is still null after initialization
   useEffect(() => {
     if (isInitialized && activeText === null) {
-      console.log("Setting default activeText to 0");
       setActiveText(0);
     }
   }, [isInitialized, activeText]);
 
   return (
     <div className="w-[25%] flex flex-col gap-4 pl-4">
+      {/* Tools Panel - Updated with expand/collapse functionality */}
       <div
-        className="rounded-xl overflow-hidden h-32 relative bg-black/40 border-1 border-[#f2e9c9]"
+        className={`rounded-xl overflow-hidden relative bg-black/40 border-1 border-[#f2e9c9] transition-all duration-700 ease-in-out ${
+          expandedPanel === "tools" ? "h-[400px]" : "h-32"
+        }`}
+        onClick={() => togglePanel("tools")}
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",
@@ -259,16 +238,26 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent z-10"></div>
         <div className="absolute top-0 left-0 p-4 z-20 w-full h-full">
-          <div className="text-gray-300 text-sm h-full overflow-y-auto custom-scrollbar">
+          <h2 className="text-2xl font-serif italic text-white mb-2">
+            {language === "english" ? "Tools" : "道具"}
+          </h2>
+          <div
+            className={`text-gray-300  ${
+              expandedPanel === "tools"
+                ? "h-[calc(100%-3rem)] overflow-y-auto custom-scrollbar"
+                : "line-clamp-2"
+            }`}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={toolsText}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={textVariants}
                 transition={{ duration: 0.3 }}
               >
-                "{toolsText}"
+                {toolsText}
                 <div className="mt-2">
                   {language === "english"
                     ? "- PM Narendra Modi"
@@ -278,6 +267,19 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
             </AnimatePresence>
           </div>
         </div>
+        {expandedPanel === "tools" && (
+          <motion.div
+            className="absolute top-2 right-2 z-30 text-white text-xl cursor-pointer hover:text-gray-300"
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpandedPanel(null);
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <i className="bi bi-x"></i>
+          </motion.div>
+        )}
       </div>
 
       {/* Explore Frequencies */}
@@ -287,16 +289,14 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
             {language === "english" ? "Explore Frequencies" : "周波数を探索"}
           </h2>
 
-          {/* Default text if activeText is null or button texts aren't loaded yet */}
           {(activeText === null || buttonTexts[language]?.length === 0) && (
-            <div className="bg-black/80 border text-center border-[#f2e9c9] rounded p-4 mb-4 text-white text-sm">
+            <div className="bg-black/80 border text-center border-[#f2e9c9] rounded p-4 mb-4 text-white ">
               {language === "english"
                 ? "Select a point to explore frequencies"
                 : "周波数を探索するポイントを選択してください"}
             </div>
           )}
 
-          {/* Text boxes - Only render if we have data and activeText is set */}
           {activeText !== null &&
             buttonTexts[language]?.length > 0 &&
             buttonTexts[language].map((text, index) => (
@@ -304,7 +304,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                 {activeText === index && (
                   <div
                     id={textBoxIds[index]}
-                    className="bg-black/80 border text-center border-[#f2e9c9] rounded p-4 mb-4 text-white text-sm"
+                    className="bg-black/80 border text-center border-[#f2e9c9] rounded p-4 mb-4 text-white "
                   >
                     {text}
                   </div>
@@ -312,7 +312,6 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
               </React.Fragment>
             ))}
 
-          {/* Positioned buttons */}
           {buttonPositions.map((pos, index) => (
             <React.Fragment key={index}>
               <div
@@ -339,7 +338,6 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                 />
               </div>
 
-              {/* Arrow connections - Only render if activeText is set and equals this index */}
               {activeText === index && buttonTexts[language]?.length > 0 && (
                 <Xarrow
                   start={buttonIds[index]}

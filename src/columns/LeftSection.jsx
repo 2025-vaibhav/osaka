@@ -221,7 +221,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
             {language === "english" ? "Introduction" : "紹介"}
           </h2>
           <div
-            className={`text-gray-300 text-sm overflow-hidden ${
+            className={`text-gray-300  overflow-hidden ${
               expandedPanel === "introduction"
                 ? "h-56 overflow-y-auto custom-scrollbar"
                 : "line-clamp-1"
@@ -326,7 +326,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
                           <AnimatePresence>
                             <motion.p
                               key={`process-desc-${index}-${language}`}
-                              className="text-sm flex-grow text-center overflow-hidden"
+                              className=" flex-grow text-center overflow-hidden"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
@@ -338,7 +338,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
                         </div>
                       ) : (
                         <motion.span
-                          className="text-white text-xs text-center px-1 relative z-10"
+                          className="text-white text text-center px-1 relative z-10"
                           whileHover={{ scale: 1.1 }}
                         >
                           {getLocalizedText(process, "name") || index + 1}
@@ -400,7 +400,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
                         transition={{ type: "spring", damping: 20 }}
                       />
                       <motion.span
-                        className="text-white text-sm text-center px-1 relative z-10"
+                        className="text-white  text-center px-1 relative z-10"
                         whileHover={{ scale: 1.1 }}
                       >
                         {step}
@@ -448,7 +448,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
             {language === "english" ? "Designs" : "デザイン"}
           </h2>
           <div
-            className={`text-gray-300 text-sm overflow-hidden ${
+            className={`text-gray-300  overflow-hidden ${
               expandedPanel === "designs"
                 ? "h-80 overflow-y-auto custom-scrollbar"
                 : expandedPanel === "history"
@@ -509,7 +509,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
             {language === "english" ? "History" : "歴史"}
           </h2>
           <div
-            className={`text-gray-300 text-sm overflow-hidden ${
+            className={`text-gray-300  overflow-hidden ${
               expandedPanel === "history"
                 ? "h-40 overflow-y-auto custom-scrollbar"
                 : expandedPanel === "designs" ||

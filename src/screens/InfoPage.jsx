@@ -194,7 +194,7 @@ export default function InfoPage({ onNavigate, sectionId }) {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <span className="text-white text-xs mt-2 transition-opacity duration-300 whitespace-nowrap w-full text-center">
+                    <span className="text-white text-xl mt-2 transition-opacity duration-300 whitespace-nowrap w-full text-center">
                       {craft.name}
                     </span>
                   </div>
