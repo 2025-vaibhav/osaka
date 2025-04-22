@@ -221,10 +221,10 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
             {language === "english" ? "Introduction" : "紹介"}
           </h2>
           <div
-            className={`text-gray-300  overflow-hidden ${
+            className={`text-gray-300 text-xl overflow-hidden ${
               expandedPanel === "introduction"
                 ? "h-56 overflow-y-auto custom-scrollbar"
-                : "line-clamp-1"
+                : "line-clamp-2"
             }`}
           >
             <AnimatePresence mode="wait">
@@ -264,7 +264,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
         </h2>
         <div className="border-t border-gray-500 mb-4"></div>
         <div
-          className={`overflow-x-auto pb-2 mt-2 ${
+          className={`overflow-x-auto  pb-2 mt-2 ${
             selectedCircle === null ? "custom-scrollbar" : "overflow-hidden"
           } transition-all duration-500 ease-in-out`}
         >
@@ -277,7 +277,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
               ? processes.map((process, index) => (
                   <motion.div
                     key={index}
-                    className={`relative group transition-all duration-500 ease-in-out ${
+                    className={`relative text-xl group transition-all duration-500 ease-in-out ${
                       selectedCircle !== null
                         ? selectedCircle === index
                           ? "w-full"
@@ -316,7 +316,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
                       {selectedCircle === index ? (
                         <div className="p-4 text-white w-full h-full flex flex-col relative z-10">
                           <motion.h3
-                            className="font-semibold mb-2 text-center"
+                            className="font-semibold text-xl mb-2 text-center"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.2 }}
@@ -326,7 +326,7 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
                           <AnimatePresence>
                             <motion.p
                               key={`process-desc-${index}-${language}`}
-                              className=" flex-grow text-center overflow-hidden"
+                              className=" flex-grow text-lg text-center overflow-hidden"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
@@ -448,12 +448,12 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
             {language === "english" ? "Designs" : "デザイン"}
           </h2>
           <div
-            className={`text-gray-300  overflow-hidden ${
+            className={`text-gray-300 text-xl overflow-hidden ${
               expandedPanel === "designs"
-                ? "h-80 overflow-y-auto custom-scrollbar"
+                ? "h-56 overflow-y-auto custom-scrollbar"
                 : expandedPanel === "history"
                 ? "h-0"
-                : "line-clamp-1"
+                : "line-clamp-2"
             }`}
           >
             <AnimatePresence mode="wait">
@@ -509,13 +509,13 @@ const LeftSection = ({ selectedCraft, sectionId }) => {
             {language === "english" ? "History" : "歴史"}
           </h2>
           <div
-            className={`text-gray-300  overflow-hidden ${
+            className={`text-gray-300 text-xl overflow-hidden ${
               expandedPanel === "history"
-                ? "h-40 overflow-y-auto custom-scrollbar"
+                ? "h-56 overflow-y-auto custom-scrollbar"
                 : expandedPanel === "designs" ||
                   expandedPanel === "introduction"
                 ? "h-0"
-                : "line-clamp-1"
+                : "line-clamp-2"
             }`}
           >
             <AnimatePresence mode="wait">

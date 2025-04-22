@@ -226,7 +226,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
       {/* Tools Panel - Updated with expand/collapse functionality */}
       <div
         className={`rounded-xl overflow-hidden relative bg-black/40 border-1 border-[#f2e9c9] transition-all duration-700 ease-in-out ${
-          expandedPanel === "tools" ? "h-[400px]" : "h-32"
+          expandedPanel === "tools" ? "h-[300px]" : "h-32"
         }`}
         onClick={() => togglePanel("tools")}
         style={{
@@ -237,10 +237,10 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent z-10"></div>
-        <div className="absolute top-0 left-0 p-4 z-20 w-full h-full">
-          <h2 className="text-2xl font-serif italic text-white mb-2">
+        <div className="absolute top-0 left-0 p-4 z-20 pt-8 text-xl w-full h-full">
+          {/* <h2 className="text-2xl font-serif italic text-white mb-2">
             {language === "english" ? "Tools" : "道具"}
-          </h2>
+          </h2> */}
           <div
             className={`text-gray-300  ${
               expandedPanel === "tools"
@@ -304,7 +304,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                 {activeText === index && (
                   <div
                     id={textBoxIds[index]}
-                    className="bg-black/80 border text-center border-[#f2e9c9] rounded p-4 mb-4 text-white "
+                    className="bg-black/80 border text-center border-[#f2e9c9] rounded p-4 mb-4 text-white text-lg"
                   >
                     {text}
                   </div>
