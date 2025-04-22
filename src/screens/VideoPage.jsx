@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLanguage } from "../LanguageContext";
 
 const VideoPage = ({ onNavigate, sectionId }) => {
   const { language } = useLanguage(sectionId);
-  const scrollContainerRef = useRef(null);
-  const videoRef = useRef(null);
-  const contentContainerRef = useRef(null);
   const [content, setContent] = useState(null);
-  const [initialVideoWidth, setInitialVideoWidth] = useState(0);
-  const [scrollable, setScrollable] = useState(false);
-  const [fullyScrolled, setFullyScrolled] = useState(false);
+
+  const styleVariables = {
+    "--video-height": "70%", 
+    "--text-width": "55%", 
+    "--video-object-fit": "contain", 
+  };
 
   useEffect(() => {
     fetch("/videopage-data.json")
@@ -19,82 +19,6 @@ const VideoPage = ({ onNavigate, sectionId }) => {
       .then((data) => setContent(data))
       .catch((err) => console.error("Error loading content:", err));
   }, []);
-
-  useEffect(() => {
-    const calculateInitialWidth = () => {
-      if (contentContainerRef.current) {
-        const contentWidth = contentContainerRef.current.offsetWidth;
-        setInitialVideoWidth(contentWidth*0.99);
-      }
-    };
-
-    if (content) {
-      setTimeout(calculateInitialWidth, 0);
-    }
-
-    window.addEventListener("resize", calculateInitialWidth);
-    return () => window.removeEventListener("resize", calculateInitialWidth);
-  }, [content]);
-
-  const checkIfFullyScrolled = () => {
-    if (!scrollContainerRef.current) return false;
-
-    const container = scrollContainerRef.current;
-    const scrollTop = container.scrollTop;
-    const scrollHeight = container.scrollHeight;
-    const clientHeight = container.clientHeight;
-
-    return scrollHeight - clientHeight - scrollTop < 5;
-  };
-
-  useEffect(() => {
-    if (!content || !scrollContainerRef.current || !initialVideoWidth) return;
-
-    const scrollContainer = scrollContainerRef.current;
-
-    const handleScroll = () => {
-      const scrollTop = scrollContainer.scrollTop;
-      const scrollHeight = scrollContainer.scrollHeight;
-      const clientHeight = scrollContainer.clientHeight;
-      const maxScroll = Math.max(scrollHeight - clientHeight, 1);
-      const scrollPercentage = Math.min(scrollTop / maxScroll, 1);
-
-      // Update video scale transform
-      const scale = 1 - scrollPercentage * 0.5; // Reduce by max 50%
-
-      if (videoRef.current) {
-        // Scale the video
-        videoRef.current.style.transform = `scale(${scale})`;
-
-        // Calculate shrinking amount to adjust content position
-        const videoHeight = (initialVideoWidth * 9) / 16;
-        const heightReduction = videoHeight * (1 - scale);
-
-        // Move the scroll container up to eliminate the gap
-        // This will push content up dynamically as video shrinks
-        scrollContainer.style.marginTop = `-${heightReduction * 0.5}px`;
-      }
-
-      setFullyScrolled(checkIfFullyScrolled());
-    };
-
-    scrollContainer.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
-
-    return () => {
-      scrollContainer.removeEventListener("scroll", handleScroll);
-    };
-  }, [content, initialVideoWidth]);
-
-  useEffect(() => {
-    if (content && scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const isCurrentlyScrollable =
-        container.scrollHeight > container.clientHeight + 2;
-      setScrollable(isCurrentlyScrollable);
-      setFullyScrolled(!isCurrentlyScrollable || checkIfFullyScrolled());
-    }
-  }, [content]);
 
   if (!content)
     return (
@@ -104,7 +28,10 @@ const VideoPage = ({ onNavigate, sectionId }) => {
     );
 
   return (
-    <div className="w-full h-full bg-transparent text-[#D4D090] flex justify-center items-center overflow-hidden">
+    <div
+      className="w-full h-full bg-transparent text-[#D4D090] flex justify-center items-center overflow-hidden"
+      style={styleVariables}
+    >
       <div className="gradient-box w-[85vw] h-full rounded-4xl p-8 relative shadow-lg flex flex-col">
         {/* Back Button */}
         <button
@@ -133,28 +60,22 @@ const VideoPage = ({ onNavigate, sectionId }) => {
 
         <hr className="mb-5 w-[600px] mx-auto" />
 
-        {/* Fixed Height Container to hold both video and content */}
+        {/* Main Content Container */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Video Container */}
-          <div className="flex justify-center mb-4">
-            <div
-              className="origin-center"
-              style={{
-                width: `${initialVideoWidth}px`,
-                height: `${(initialVideoWidth * 9) / 16}px`,
-              }}
-            >
+          <div
+            className="flex items-center justify-center mb-4"
+            style={{ height: "var(--video-height)" }}
+          >
+            <div className="w-full h-full">
               <video
-                ref={videoRef}
                 autoPlay
                 loop
                 muted
                 playsInline
                 disablePictureInPicture
-                className="w-full h-full object-cover origin-center"
-                style={{
-                  transition: "transform 0.2s ease-out",
-                }}
+                className="w-full h-full"
+                style={{ objectFit: "var(--video-object-fit)" }}
               >
                 <source src="/V.mp4" type="video/mp4" />
                 {content[language].videoFallbackText}
@@ -162,18 +83,17 @@ const VideoPage = ({ onNavigate, sectionId }) => {
             </div>
           </div>
 
-          {/* Scrollable Content with Dynamic Height */}
+          {/* Text Content Container */}
           <div
-            ref={scrollContainerRef}
-            className="overflow-y-auto V-Scroll pr-2 flex-1"
+            className="overflow-y-auto V-Scroll pr-2"
             style={{
-              transition: "margin-top 0.2s ease-out",
-              minHeight: "100px",
+              height: "calc(100% - var(--video-height))",
+              width: "100%",
             }}
           >
             <div
-              ref={contentContainerRef}
-              className="w-[59%] text-gray-100 mx-auto text-justify"
+              className="text-gray-100 mx-auto text-justify"
+              style={{ width: "var(--text-width)" }}
             >
               {content[language].paragraphs.map((paragraph, index) => (
                 <p key={index} className="mb-4">
@@ -183,19 +103,14 @@ const VideoPage = ({ onNavigate, sectionId }) => {
               <p className="mb-4 italic text-sm">{content[language].note}</p>
               <div className="h-2"></div>
             </div>
-          </div>  
+          </div>
         </div>
 
         {/* Next Button */}
         <div className="flex justify-center mt-4">
           <button
-            onClick={() => fullyScrolled && onNavigate("select-craft")}
-            className={`px-8 py-3 w-28 border rounded-full transition ${
-              fullyScrolled
-                ? "border-white text-white hover:bg-white hover:text-black"
-                : "border-gray-500 text-gray-500 cursor-not-allowed"
-            }`}
-            disabled={!fullyScrolled}
+            onClick={() => onNavigate("select-craft")}
+            className="px-8 py-3 w-28 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
           >
             {language === "english" ? "Next" : "次へ"}
           </button>

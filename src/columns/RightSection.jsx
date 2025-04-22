@@ -79,14 +79,14 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     // Initialize background image based on the default craft
     const getBackgroundImage = (craftName) => {
       const imageMap = {
-        bidri: "/vinod-pics/bidriware/tools.png",
-        zardozi: "/vinod-pics/zardozi/tools.png",
-        charkha: "/vinod-pics/charkha/tools.png",
-        "loom weaving": "/vinod-pics/loom-weaving/tools.png",
-        dyeing: "/vinod-pics/dyeing/tools.png",
-        "block printing": "/vinod-pics/block-printing/tools.png",
+        bidri: "/craft-pics/bidriware/tools.png",
+        zardozi: "/craft-pics/zardozi/tools.png",
+        charkha: "/craft-pics/charkha/tools.png",
+        "loom weaving": "/craft-pics/loom-weaving/tools.png",
+        dyeing: "/craft-pics/dyeing/tools.png",
+        "block printing": "/craft-pics/block-printing/tools.png",
       };
-      return imageMap[craftName] || "/vinod-pics/loom-weaving/tools.png";
+      return imageMap[craftName] || "/craft-pics/loom-weaving/tools.png";
     };
 
     if (isMounted) {
@@ -118,7 +118,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
       });
 
     // Load craft data
-    fetch("/english-data.json")
+    fetch("/language-data.json")
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
@@ -176,14 +176,14 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
     // Update background image
     const getBackgroundImage = (craftName) => {
       const imageMap = {
-        bidri: "/vinod-pics/bidriware/tools.png",
-        zardozi: "/vinod-pics/zardozi/tools.png",
-        charkha: "/vinod-pics/charkha/tools.png",
-        "loom weaving": "/vinod-pics/loom-weaving/tools.png",
-        dyeing: "/vinod-pics/dyeing/tools.png",
-        "block printing": "/vinod-pics/block-printing/tools.png",
+        bidri: "/craft-pics/bidriware/tools.png",
+        zardozi: "/craft-pics/zardozi/tools.png",
+        charkha: "/craft-pics/charkha/tools.png",
+        "loom weaving": "/craft-pics/loom-weaving/tools.png",
+        dyeing: "/craft-pics/dyeing/tools.png",
+        "block printing": "/craft-pics/block-printing/tools.png",
       };
-      return imageMap[craftName] || "/vinod-pics/loom-weaving/tools.png";
+      return imageMap[craftName] || "/craft-pics/loom-weaving/tools.png";
     };
 
     setBackgroundImage(getBackgroundImage(currentCraft));
@@ -259,10 +259,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent z-10"></div>
         <div className="absolute top-0 left-0 p-4 z-20 w-full h-full">
-          <h2 className="text-2xl font-serif italic text-white">
-            {language === "english" ? "Tools" : "道具"}
-          </h2>
-          <div className="text-gray-300 text-sm h-[calc(100%-40px)] overflow-y-auto custom-scrollbar">
+          <div className="text-gray-300 text-sm h-full overflow-y-auto custom-scrollbar">
             <AnimatePresence mode="wait">
               <motion.div
                 key={toolsText}
@@ -271,7 +268,12 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                {toolsText}
+                "{toolsText}"
+                <div className="mt-2">
+                  {language === "english"
+                    ? "- PM Narendra Modi"
+                    : "- ナレンドラ・モディ首相"}
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
