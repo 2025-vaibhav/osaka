@@ -118,7 +118,7 @@ const RightSection = ({ selectedCraft, sectionId, originalCraftName }) => {
       });
 
     // Load craft data
-    fetch("/english-data.json")
+    fetch("/language-data.json")
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
