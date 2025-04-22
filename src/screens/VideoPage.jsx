@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLanguage } from "../LanguageContext";
 
 const VideoPage = ({ onNavigate, sectionId }) => {
   const { language } = useLanguage(sectionId);
   const [content, setContent] = useState(null);
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const textContainerRef = useRef(null);
 
   const styleVariables = {
-    "--video-height": "50%", 
-    "--text-width": "39%", 
-    "--video-object-fit": "contain", 
+    "--video-height": "50%",
+    "--text-width": "39%",
+    "--video-object-fit": "contain",
   };
 
   useEffect(() => {
@@ -19,6 +21,20 @@ const VideoPage = ({ onNavigate, sectionId }) => {
       .then((data) => setContent(data))
       .catch((err) => console.error("Error loading content:", err));
   }, []);
+
+  useEffect(() => {
+    const textContainer = textContainerRef.current;
+    if (!textContainer) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = textContainer;
+      const isBottom = scrollHeight - scrollTop <= clientHeight + 5; // Adding a small buffer
+      setIsScrolledToBottom(isBottom);
+    };
+
+    textContainer.addEventListener("scroll", handleScroll);
+    return () => textContainer.removeEventListener("scroll", handleScroll);
+  }, [content]); // Re-run when content changes
 
   if (!content)
     return (
@@ -85,6 +101,7 @@ const VideoPage = ({ onNavigate, sectionId }) => {
 
           {/* Text Content Container */}
           <div
+            ref={textContainerRef}
             className="overflow-y-auto V-Scroll pr-2"
             style={{
               height: "calc(100% - var(--video-height))",
@@ -110,7 +127,12 @@ const VideoPage = ({ onNavigate, sectionId }) => {
         <div className="flex justify-center mt-4">
           <button
             onClick={() => onNavigate("select-craft")}
-            className="px-8 py-3 w-28 border border-white rounded-full text-white hover:bg-white hover:text-black transition"
+            disabled={!isScrolledToBottom}
+            className={`px-8 py-3 w-28 border rounded-full transition ${
+              isScrolledToBottom
+                ? "border-white text-white hover:bg-white hover:text-black"
+                : "border-gray-500 text-gray-500 cursor-not-allowed"
+            }`}
           >
             {language === "english" ? "Next" : "次へ"}
           </button>
