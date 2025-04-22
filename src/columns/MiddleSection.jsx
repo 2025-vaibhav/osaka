@@ -59,7 +59,7 @@ const MiddleSection = ({ selectedCraft, sectionId }) => {
     // Generate the gallery image paths
     const images = [];
     for (let i = 1; i <= imageCount; i++) {
-      images.push(`/craft-pics/${craftPath}/gallery/${i}.png`);
+      images.push(`/craft-pics/${craftPath}/gallery/${i}.webp`);
     }
     setSlideImages(images);
     setCurrentSlide(0); // Reset to first slide when craft changes
